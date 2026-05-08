@@ -1,0 +1,282 @@
+/* ─── Nav scroll behavior ────────────────────────────────────── */
+const nav = document.getElementById('nav');
+
+function updateNav() {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}
+window.addEventListener('scroll', updateNav, { passive: true });
+updateNav();
+
+/* ─── Scroll-locked hero: progressive text reveal ────────────── */
+/*
+  The wrapper is 200vh. The sticky inner panel is locked for
+  (200vh - 100vh) = 100vh of scroll. Stages trigger at:
+
+    Stage 1 — 0 %    (visible on page open)
+    Stage 2 — 15 %   (~15vh scrolled)
+    Stage 3 — 30 %   (~30vh scrolled)
+*/
+const wrapper = document.getElementById('aboutHeroWrap');
+
+const stages = [
+  { el: document.getElementById('aboutStage1'), at: 0.00, done: false, doneAt: 0 },
+  { el: document.getElementById('aboutStage2'), at: 0.15, done: false, doneAt: 0 },
+  { el: document.getElementById('aboutStage3'), at: 0.30, done: false, doneAt: 0 },
+];
+
+function heroProgress() {
+  const top         = wrapper.getBoundingClientRect().top;
+  const totalScroll = wrapper.offsetHeight - window.innerHeight;
+  return Math.max(0, Math.min(1, -top / totalScroll));
+}
+
+function triggerStage(stage) {
+  stage.done   = true;
+  stage.doneAt = Date.now();
+  stage.el.classList.add('visible');
+  setTimeout(updateHero, 460); // chain: check next stage after animation
+}
+
+function updateHero() {
+  const p = heroProgress();
+
+  // Reset stages when scrolling back — stage 0 always stays visible
+  for (let i = stages.length - 1; i >= 1; i--) {
+    if (stages[i].done && p < stages[i].at) {
+      stages[i].done   = false;
+      stages[i].doneAt = 0;
+      stages[i].el.classList.remove('visible');
+    }
+  }
+
+  // Trigger the next pending stage, one at a time with a 450ms gap
+  for (let i = 0; i < stages.length; i++) {
+    const stage = stages[i];
+    if (stage.done) continue;
+    if (p < stage.at) break;
+    const prev = stages[i - 1];
+    if (prev && !prev.done) break;
+    const wait = prev ? 450 - (Date.now() - prev.doneAt) : 0;
+    if (wait <= 0) {
+      triggerStage(stage);
+    } else {
+      setTimeout(updateHero, wait);
+    }
+    break;
+  }
+}
+
+if (wrapper) {
+  window.addEventListener('scroll', updateHero, { passive: true });
+  updateHero();
+}
+
+/* ─── Scroll-triggered reveals ───────────────────────────────── */
+const triggeredGroups = new WeakSet();
+
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    revealObs.unobserve(el);
+    const group = el.closest('.footer__inner, .team__header');
+    if (group && !triggeredGroups.has(group)) {
+      triggeredGroups.add(group);
+      Array.from(group.querySelectorAll('.reveal')).forEach((s, i) => {
+        setTimeout(() => s.classList.add('visible'), i * 120);
+      });
+    } else if (!group) {
+      el.classList.add('visible');
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -32px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ─── Music carousel ─────────────────────────────────────────── */
+const musicViewport   = document.getElementById('musicViewport');
+const musicTrack      = document.getElementById('musicTrack');
+const musicSlides     = document.querySelectorAll('#musicTrack .carousel__slide');
+const musicSliderWrap = document.getElementById('musicSliderWrap');
+const musicSliderFill = document.getElementById('musicSliderFill');
+const MUSIC_GAP       = 24;
+let musicCurrent      = 0;
+
+function getMusicSlides() {
+  return Array.from(musicSlides);
+}
+
+function getMusicSlideStep() {
+  const s = getMusicSlides()[0];
+  return s ? s.getBoundingClientRect().width + MUSIC_GAP : 0;
+}
+
+function updateMusicSlider() {
+  musicSliderFill.style.transform = `translateX(${musicCurrent * 100}%)`;
+}
+
+function goToMusicSlide(index, animate = true) {
+  const slides = getMusicSlides();
+  musicCurrent = Math.max(0, Math.min(index, slides.length - 1));
+  if (!animate) musicTrack.style.transition = 'none';
+  musicTrack.style.transform = `translateX(-${musicCurrent * getMusicSlideStep()}px)`;
+  if (!animate) {
+    musicTrack.getBoundingClientRect();
+    musicTrack.style.transition = '';
+  }
+  if (!animate) musicSliderFill.style.transition = 'none';
+  updateMusicSlider();
+  if (!animate) {
+    musicSliderFill.getBoundingClientRect();
+    musicSliderFill.style.transition = '';
+  }
+}
+
+function setMusicSlideWidths() {
+  const vpWidth    = musicViewport.offsetWidth;
+  const slideWidth = (vpWidth - MUSIC_GAP) / 1.6;
+  getMusicSlides().forEach(s => { s.style.flexBasis = `${slideWidth}px`; });
+  goToMusicSlide(musicCurrent, false);
+}
+
+if (musicViewport) {
+  /* Slider: click or drag to seek */
+  let musicSliderActive = false;
+
+  function seekMusicFromEvent(e) {
+    const rect = musicSliderWrap.querySelector('.carousel__slider-track').getBoundingClientRect();
+    const t    = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const slides = getMusicSlides();
+    goToMusicSlide(Math.round(t * (slides.length - 1)));
+  }
+
+  musicSliderWrap.addEventListener('mousedown', e => { musicSliderActive = true; seekMusicFromEvent(e); e.preventDefault(); });
+  window.addEventListener('mousemove', e => { if (musicSliderActive) seekMusicFromEvent(e); });
+  window.addEventListener('mouseup', () => { musicSliderActive = false; });
+
+  musicSliderWrap.addEventListener('touchstart', e => seekMusicFromEvent(e.touches[0]), { passive: true });
+  musicSliderWrap.addEventListener('touchmove',  e => seekMusicFromEvent(e.touches[0]), { passive: true });
+
+  /* Carousel swipe / drag */
+  let musicDragging = false, musicDragStartX = 0, musicDragDeltaX = 0;
+
+  function onMusicDragStart(x) {
+    musicDragging = true; musicDragStartX = x; musicDragDeltaX = 0;
+    musicTrack.style.transition = 'none';
+  }
+  function onMusicDragMove(x) {
+    if (!musicDragging) return;
+    musicDragDeltaX = x - musicDragStartX;
+    musicTrack.style.transform = `translateX(-${musicCurrent * getMusicSlideStep() - musicDragDeltaX}px)`;
+  }
+  function onMusicDragEnd() {
+    if (!musicDragging) return;
+    musicDragging = false;
+    musicTrack.style.transition = '';
+    if (Math.abs(musicDragDeltaX) > 80) {
+      goToMusicSlide(musicDragDeltaX < 0 ? musicCurrent + 1 : musicCurrent - 1);
+    } else {
+      goToMusicSlide(musicCurrent);
+    }
+  }
+
+  musicViewport.addEventListener('touchstart', e => onMusicDragStart(e.touches[0].clientX), { passive: true });
+  musicViewport.addEventListener('touchmove',  e => onMusicDragMove(e.touches[0].clientX),  { passive: true });
+  musicViewport.addEventListener('touchend',   onMusicDragEnd);
+  musicViewport.addEventListener('mousedown',  e => { onMusicDragStart(e.clientX); e.preventDefault(); });
+  window.addEventListener('mousemove', e => { if (musicDragging) onMusicDragMove(e.clientX); });
+  window.addEventListener('mouseup',   onMusicDragEnd);
+
+  musicViewport.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  goToMusicSlide(musicCurrent - 1);
+    if (e.key === 'ArrowRight') goToMusicSlide(musicCurrent + 1);
+  });
+
+  /* Trackpad horizontal swipe */
+  let musicWheelAccum    = 0;
+  let musicWheelTimer    = null;
+  let musicWheelCooldown = false;
+  musicViewport.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY) * 0.5) return;
+    e.preventDefault();
+    if (musicWheelCooldown) return;
+    musicWheelAccum += e.deltaX;
+    clearTimeout(musicWheelTimer);
+    musicWheelTimer = setTimeout(() => { musicWheelAccum = 0; }, 300);
+    if (Math.abs(musicWheelAccum) > 100) {
+      goToMusicSlide(musicWheelAccum > 0 ? musicCurrent + 1 : musicCurrent - 1);
+      musicWheelAccum = 0;
+      musicWheelCooldown = true;
+      setTimeout(() => { musicWheelCooldown = false; }, 700);
+    }
+  }, { passive: false });
+
+  setMusicSlideWidths();
+  window.addEventListener('resize', setMusicSlideWidths, { passive: true });
+}
+
+/* ─── Team accordion ─────────────────────────────────────────── */
+const teamAccordion = document.getElementById('teamAccordion');
+if (teamAccordion) {
+  const members = Array.from(teamAccordion.querySelectorAll('.team__member'));
+
+  function equalizeDrawerHeights() {
+    let maxH = 0;
+    members.forEach(m => {
+      const inner = m.querySelector('.team__body-inner');
+      if (inner && inner.scrollHeight > maxH) maxH = inner.scrollHeight;
+    });
+    if (maxH > 0) {
+      const cap = Math.round(window.innerHeight * 0.85);
+      teamAccordion.style.setProperty('--team-drawer-height', Math.min(maxH, cap) + 'px');
+    }
+  }
+
+  members.forEach(member => {
+    const trigger = member.querySelector('.team__trigger');
+    trigger.addEventListener('click', () => {
+      const isOpen = member.classList.contains('team__member--open');
+      members.forEach(m => {
+        m.classList.remove('team__member--open');
+        m.querySelector('.team__trigger').setAttribute('aria-expanded', 'false');
+        m.querySelector('.team__expand-text').textContent = 'EXPAND';
+      });
+      if (!isOpen) {
+        member.classList.add('team__member--open');
+        trigger.setAttribute('aria-expanded', 'true');
+        trigger.querySelector('.team__expand-text').textContent = 'COLLAPSE';
+      }
+    });
+  });
+
+  window.addEventListener('load', equalizeDrawerHeights);
+  let teamResizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(teamResizeTimer);
+    teamResizeTimer = setTimeout(equalizeDrawerHeights, 150);
+  }, { passive: true });
+}
+
+/* ─── Smooth scroll for # links ──────────────────────────────── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* ─── Open team drawer from URL hash ─────────────────────────── */
+(function () {
+  var hash = window.location.hash.slice(1);
+  if (!hash) return;
+  window.addEventListener('load', function () {
+    var trigger = document.getElementById(hash);
+    if (!trigger || !trigger.classList.contains('team__trigger')) return;
+    setTimeout(function () {
+      trigger.click();
+      trigger.closest('.team__member').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  });
+})();

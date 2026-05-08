@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Anatole Quartet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/anatolelogo.png" type="image/png">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/about.css">
+  <script>!function(){var a=sessionStorage.getItem('aq_trans');a&&(sessionStorage.removeItem('aq_trans'),document.documentElement.className+=' aq-enter-'+a+' aq-skip-intro');}();</script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav" aria-label="Primary navigation">
+    <a href="index.html" class="nav__logo-link" aria-label="Anatole Quartet home">
+      <img src="assets/images/anatolelogo.png" alt="Anatole Quartet" class="nav__logo-img">
+    </a>
+    <div class="nav__links">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="about.html" class="nav__link nav__link--active">About</a>
+      <a href="gallery.html" class="nav__link">Gallery</a>
+      <a href="#footer" class="nav__link">Contact <span class="nav__arrow">↓</span></a>
+    </div>
+  </nav>
+
+  <!-- About Hero: scroll-locked progressive text reveal -->
+  <section class="about-hero-wrap" id="aboutHeroWrap" aria-label="About the Anatole Quartet">
+    <div class="about-hero" id="aboutHero">
+
+      <img
+        src="assets/images/abouthero.jpg"
+        alt="The Anatole Quartet"
+        class="about-hero__img"
+        draggable="false"
+      >
+      <div class="about-hero__overlay" aria-hidden="true"></div>
+
+      <div class="about-hero__content" id="aboutHeroContent">
+
+        <!-- Stage 1: pronunciation + definition (present on page open) -->
+        <div class="about-hero__stage" id="aboutStage1">
+          <div class="about-hero__stage-inner">
+            <p class="about-hero__pronunciation">
+              <span class="about-hero__phonetic">[an-uh-tohl]</span>&nbsp;&nbsp;<span class="about-hero__pos">noun</span>
+            </p>
+            <p class="about-hero__def">From a Greek word meaning &#8220;sunrise,&#8221; the moment of first light, often interpreted as &#8220;from the east.&#8221; In Greek mythology, one of the Horae, who were minor goddesses of the hours.</p>
+          </div>
+        </div>
+
+        <!-- Stage 2: group description -->
+        <div class="about-hero__stage" id="aboutStage2">
+          <div class="about-hero__stage-inner">
+            <p class="about-hero__body">The group takes its name from Anatole, the Greek Hora presiding over the east winds and the hour of sunrise. Self-directed and student-run, the quartet regularly performs at the Department of Music Undergraduate Forums and has appeared as guests of the La Jolla Symphony &amp; Chorus.</p>
+          </div>
+        </div>
+
+        <!-- Stage 3: members -->
+        <div class="about-hero__stage" id="aboutStage3">
+          <div class="about-hero__stage-inner">
+            <p class="about-hero__body">The Anatole Quartet is Jacob Kang (cello), Raymond Li (violin), Alice Guo (violin), and Luke Valmadrid (viola). The members respectively study bioinformatics, neurobiology, design, and medicine.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- The Music -->
+  <section class="music" id="music" aria-label="The Music">
+    <div class="music__header reveal">
+      <h2 class="music__title">The Music</h2>
+      <p class="music__subtitle">A selection of works we've performed or are preparing, alongside the recordings that shaped how we hear them, and brief notes on what the music means to us.</p>
+    </div>
+
+    <div class="carousel" id="musicCarousel" role="region" aria-label="Music repertoire">
+      <div class="carousel__clip">
+        <div class="carousel__viewport" id="musicViewport">
+          <div class="carousel__track" id="musicTrack">
+
+            <!-- Card 1: Mendelssohn -->
+            <div class="carousel__slide" role="group" aria-label="Repertoire 1">
+              <article class="music-card reveal">
+                <img src="assets/images/mendelssohn.jpg" alt="Felix Mendelssohn" class="music-card__img" draggable="false">
+                <div class="music-card__body">
+                  <p class="music-card__composer">Felix Mendelssohn</p>
+                  <p class="music-card__piece">String Quartet No. 6 in F Minor</p>
+                  <blockquote class="music-card__quote">&#8220;I hear a person grieving in many colors and frames, trying to process life after another&#8217;s death.&#8221;</blockquote>
+                  <p class="music-card__attr">&#8212; LUKE VALMADRID, VIOLA</p>
+                  <a href="https://youtu.be/0s7A4Iy0Ba8?si=6SrtxWtqp7m2OUez" class="event-card__btn music-card__btn" target="_blank" rel="noopener">LISTEN WITH US &#8594;</a>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 2: Tchaikovsky -->
+            <div class="carousel__slide" role="group" aria-label="Repertoire 2">
+              <article class="music-card reveal">
+                <img src="assets/images/tchaikovsky.jpg" alt="Pyotr Ilyich Tchaikovsky" class="music-card__img" draggable="false">
+                <div class="music-card__body">
+                  <p class="music-card__composer">Pyotr Ilyich Tchaikovsky</p>
+                  <p class="music-card__piece">String Quartet No. 1 in D Major, IV. Finale</p>
+                  <blockquote class="music-card__quote">&#8220;In a bright D major finale to his first string quartet, Tchaikovsky delivers an exhilarating end to a pastorale and elegant work.&#8221;</blockquote>
+                  <p class="music-card__attr">&#8212; JACOB KANG, CELLO</p>
+                  <a href="https://youtu.be/1w7w6J5ODqc?si=V5VLaLBbX_txiZ5u" class="event-card__btn music-card__btn" target="_blank" rel="noopener">LISTEN WITH US &#8594;</a>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 3: Borodin -->
+            <div class="carousel__slide" role="group" aria-label="Repertoire 3">
+              <article class="music-card reveal">
+                <img src="assets/images/borodin.jpg" alt="Alexander Borodin" class="music-card__img" draggable="false">
+                <div class="music-card__body">
+                  <p class="music-card__composer">Alexander Borodin</p>
+                  <p class="music-card__piece">Quartet No. 2 in D Major for Strings, III. Noturno</p>
+                  <blockquote class="music-card__quote">&#8220;It was a reminder that simplicity in the most unassuming pieces often needs to be earned.&#8221;</blockquote>
+                  <p class="music-card__attr">&#8212; ALICE GUO, VIOLIN</p>
+                  <a href="https://youtu.be/tx2tf--PONA?si=i8d_H9tycyIAEKmM" class="event-card__btn music-card__btn" target="_blank" rel="noopener">LISTEN WITH US &#8594;</a>
+                </div>
+              </article>
+            </div>
+
+            <!-- Card 4: Hisaishi -->
+            <div class="carousel__slide" role="group" aria-label="Repertoire 4">
+              <article class="music-card reveal">
+                <img src="assets/images/hisaishi.jpg" alt="Joe Hisaishi" class="music-card__img" draggable="false">
+                <div class="music-card__body">
+                  <p class="music-card__composer">Joe Hisaishi</p>
+                  <p class="music-card__piece">A Town with an Ocean View</p>
+                  <blockquote class="music-card__quote">&#8220;By different paths and for different reasons, we somehow found ourselves to take a pitstop in this sunny, coastline city of San Diego playing string quartet music together.&#8221;</blockquote>
+                  <p class="music-card__attr">&#8212; RAYMOND LI, VIOLIN</p>
+                  <a href="https://youtu.be/pR4iCWB-VVQ?si=Vvrx2TKWR4ht6O7f" class="event-card__btn music-card__btn" target="_blank" rel="noopener">LISTEN WITH US &#8594;</a>
+                </div>
+              </article>
+            </div>
+
+          </div><!-- /track -->
+        </div><!-- /viewport -->
+      </div><!-- /clip -->
+
+      <div class="carousel__slider-wrap" id="musicSliderWrap" aria-label="Carousel position">
+        <div class="carousel__slider-track">
+          <div class="carousel__slider-fill" id="musicSliderFill"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Team -->
+  <section class="team" id="team" aria-label="The Team">
+    <div class="team__header">
+      <h2 class="team__title reveal">The Team</h2>
+      <p class="team__subtitle reveal">Click to learn more about how we ended up here and who we are outside of music.</p>
+    </div>
+
+    <div class="team__accordion-wrap">
+      <div class="team__accordion reveal" id="teamAccordion">
+        <div class="team__accordion-inner">
+
+          <!-- Raymond Li -->
+          <div class="team__member">
+            <button class="team__trigger" id="teamRaymondTrigger" aria-expanded="false" aria-controls="teamRaymondBody">
+              <span class="team__trigger-left">
+                <span class="team__name">Raymond Li</span>
+                <span class="team__dot" aria-hidden="true">·</span>
+                <span class="team__instrument">Violin</span>
+              </span>
+              <span class="team__trigger-right">
+                <span class="team__expand-text">EXPAND</span>
+                <svg class="team__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+              </span>
+            </button>
+            <div class="team__body" id="teamRaymondBody" role="region" aria-labelledby="teamRaymondTrigger">
+              <div class="team__body-inner">
+                <div class="team__bio-col">
+                  <div class="team__bio">
+                    <p>Raymond is a third-year undergraduate student studying neurobiology with a minor in music at UC San Diego. He studied violin with Zhu Xinyi and Michael Hustedde, and discovered his passion for chamber music in the mountains of Tuscany, Italy.</p>
+                    <p>Originally from Shanghai, Raymond was a member of the Shanghai City Youth Symphony Orchestra and received certification with honors from the Shanghai Conservatory of Music. At Middlesex School in Concord, MA, he served as director of the Middlesex Music Festival and was a two-time recipient of the Thoreau Medal in Music. At UC San Diego, Raymond performs as concertmaster on rotation with the UCSD Chamber Orchestra and is an active chamber musician. He is especially grateful to be playing on a violin crafted by his grand-uncle, Zheng Quan.</p>
+                    <p>Beyond music, Raymond works at the UCSD Shiley Eye Institute and serves as co-director of pharmacy at the International Health Collective.</p>
+                  </div>
+                  <dl class="team__facts">
+                    <dt class="team__fact-label">Favorite Piece</dt>
+                    <dd class="team__fact-value">Rachmaninoff &#8212; Piano Concerto No.&#160;3</dd>
+                    <dt class="team__fact-label">On My Wishlist</dt>
+                    <dd class="team__fact-value">Cavatina from Beethoven String Quartet No.&#160;13 in B&#8209;flat major, Op.&#160;130</dd>
+                  </dl>
+                </div>
+                <div class="team__photo-col">
+                  <div class="team__photo-wrap">
+                    <img src="assets/images/raymondli.png" alt="Raymond Li" class="team__photo" draggable="false">
+                    <div class="team__photo-overlay" aria-hidden="true"></div>
+                    <div class="team__photo-socials">
+                      <a href="https://instagram.com/raymondli2005" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Raymond Li on Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      </a>
+                      <a href="https://www.linkedin.com/in/raymond-rpli/" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Raymond Li on LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alice Guo -->
+          <div class="team__member">
+            <button class="team__trigger" id="teamAliceTrigger" aria-expanded="false" aria-controls="teamAliceBody">
+              <span class="team__trigger-left">
+                <span class="team__name">Alice Guo</span>
+                <span class="team__dot" aria-hidden="true">·</span>
+                <span class="team__instrument">Violin</span>
+              </span>
+              <span class="team__trigger-right">
+                <span class="team__expand-text">EXPAND</span>
+                <svg class="team__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+              </span>
+            </button>
+            <div class="team__body" id="teamAliceBody" role="region" aria-labelledby="teamAliceTrigger">
+              <div class="team__body-inner">
+                <div class="team__bio-col">
+                  <div class="team__bio">
+                    <p>Alice Guo is a third-year student at UC San Diego studying cognitive science with a specialization in design and interaction, with minors in music and data science.</p>
+                    <p>Originally from Boston, she studied violin with Virginia Neikrug and Kelly Barr, and performed in the NEC Youth Philharmonic and NEC&#8217;s Chamber Music Intensive Performance Seminar, coached by Miriam Fried, Donald Weilerstein, and others. At UC San Diego, Alice has served as concertmaster on rotation for the Chamber Orchestra and performs extensively in chamber music.</p>
+                    <p>Outside of music, she is a UX design lead at Triton Software Engineering and works as a UX and digital media designer at UCSD Business &amp; Financial Services. She is also an incoming intern at the JPMorganChase Design Development Program. Alice enjoys discovering new food spots around San Diego, traveling, concert-going, and taking long walks at the local Trader Joe&#8217;s.</p>
+                  </div>
+                  <dl class="team__facts">
+                    <dt class="team__fact-label">Favorite Piece</dt>
+                    <dd class="team__fact-value">Tchaikovsky &#8212; Symphony No.&#160;6</dd>
+                    <dt class="team__fact-label">On My Wishlist</dt>
+                    <dd class="team__fact-value">Dvo&#345;&#225;k &#8212; String Quartet No.&#160;13, Mvt.&#160;2</dd>
+                  </dl>
+                </div>
+                <div class="team__photo-col">
+                  <div class="team__photo-wrap">
+                    <img src="assets/images/aliceguo.png" alt="Alice Guo" class="team__photo" draggable="false">
+                    <div class="team__photo-overlay" aria-hidden="true"></div>
+                    <div class="team__photo-socials">
+                      <a href="https://instagram.com/aleechguaoaoao" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Alice Guo on Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      </a>
+                      <a href="https://www.linkedin.com/in/aliceguo03/" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Alice Guo on LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Luke Carmichael Valmadrid -->
+          <div class="team__member">
+            <button class="team__trigger" id="teamLukeTrigger" aria-expanded="false" aria-controls="teamLukeBody">
+              <span class="team__trigger-left">
+                <span class="team__name">Luke Carmichael Valmadrid</span>
+                <span class="team__dot" aria-hidden="true">·</span>
+                <span class="team__instrument">Viola</span>
+              </span>
+              <span class="team__trigger-right">
+                <span class="team__expand-text">EXPAND</span>
+                <svg class="team__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+              </span>
+            </button>
+            <div class="team__body" id="teamLukeBody" role="region" aria-labelledby="teamLukeTrigger">
+              <div class="team__body-inner">
+                <div class="team__bio-col">
+                  <div class="team__bio">
+                    <p>Luke Carmichael Valmadrid is a fourth-year medical student, PRIME-Health Equity scholar, violist, and violinist at UC San Diego. He is second chair violist for the California Young Artists Symphony, a substitute for multiple regional symphonies, and violinist for the Aurelion Syzygy piano trio.</p>
+                    <p>At UW-Madison, Luke was violist of the Perlman Ensemble and a First Wave Hip-Hop Scholar, studying with Soh-Hyun Park Altino and Parry Karp of the Pro Arte Quartet. He has performed at the Stanford Chamber Music Seminar and placed at the LJSC Emerging Artists Competition. Luke also has a published poetry chapbook and a fantasy fiction excerpt selected for a Darkstar Library reading at UCSD.</p>
+                    <p>Luke&#8217;s research focuses on suicide and substance use disorders. He is greatly looking forward to applying for psychiatry residencies and becoming a physician who addresses both upstream health determinants and downstream health outcomes to maximally protect patients.</p>
+                  </div>
+                  <dl class="team__facts">
+                    <dt class="team__fact-label">Favorite Piece</dt>
+                    <dd class="team__fact-value">Mendelssohn &#8212; Piano Concerto No.&#160;1 in G Minor, Op.&#160;25</dd>
+                    <dt class="team__fact-label">On My Wishlist</dt>
+                    <dd class="team__fact-value">Carter Pann &#8212; Love Letters for String Quartet, I &amp; II</dd>
+                  </dl>
+                </div>
+                <div class="team__photo-col">
+                  <div class="team__photo-wrap">
+                    <img src="assets/images/lukevalmadrid.png" alt="Luke Carmichael Valmadrid" class="team__photo" draggable="false">
+                    <div class="team__photo-overlay" aria-hidden="true"></div>
+                    <div class="team__photo-socials">
+                      <a href="https://instagram.com/luke.valmadrid" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Luke Carmichael Valmadrid on Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Jacob Kang -->
+          <div class="team__member">
+            <button class="team__trigger" id="teamJacobTrigger" aria-expanded="false" aria-controls="teamJacobBody">
+              <span class="team__trigger-left">
+                <span class="team__name">Jacob Kang</span>
+                <span class="team__dot" aria-hidden="true">·</span>
+                <span class="team__instrument">Cello</span>
+              </span>
+              <span class="team__trigger-right">
+                <span class="team__expand-text">EXPAND</span>
+                <svg class="team__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="18 15 12 9 6 15"/>
+                </svg>
+              </span>
+            </button>
+            <div class="team__body" id="teamJacobBody" role="region" aria-labelledby="teamJacobTrigger">
+              <div class="team__body-inner">
+                <div class="team__bio-col">
+                  <div class="team__bio">
+                    <p>Jacob is a first-year bioinformatics major from New Jersey. He has performed with ensembles ranging from the New York Youth Symphony to the NAfME All-Eastern Symphony Orchestra, gracing venues including Carnegie Hall, Lincoln Center, and the New Jersey Performing Arts Center. An all-state musician, Jacob received the 2025 New Jersey Governor&#8217;s Award in Arts Education, the highest honor the state can confer in the arts.</p>
+                    <p>His favorite part of music is what he calls the &#8220;love of the game&#8221; &#8212; soaking in the moment, whether playing Bach in a nursing home or chamber music in an old Italian church.</p>
+                    <p>Outside of the practice room, Jacob is exploring career options and feels something within healthcare calls to him. Whether conducting immunology research at the Peters Lab at La Jolla Institute for Immunology, riding as an EMT, or casing in Lumnus Consulting, Jacob is passionate about computational biology and patient care.</p>
+                  </div>
+                  <dl class="team__facts">
+                    <dt class="team__fact-label">Favorite Piece</dt>
+                    <dd class="team__fact-value">Ponce &#8212; Estrellita</dd>
+                    <dt class="team__fact-label">On My Wishlist</dt>
+                    <dd class="team__fact-value">Justin Bieber &#8212; Beauty and a Beat</dd>
+                  </dl>
+                </div>
+                <div class="team__photo-col">
+                  <div class="team__photo-wrap">
+                    <img src="assets/images/jacobkang.png" alt="Jacob Kang" class="team__photo" draggable="false">
+                    <div class="team__photo-overlay" aria-hidden="true"></div>
+                    <div class="team__photo-socials">
+                      <a href="https://instagram.com/jakob.cang" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Jacob Kang on Instagram">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                      </a>
+                      <a href="https://www.linkedin.com/in/jacobkang2647/" target="_blank" rel="noopener noreferrer" class="team__photo-social-link" aria-label="Jacob Kang on LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /accordion-inner -->
+      </div><!-- /accordion -->
+    </div><!-- /accordion-wrap -->
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer" aria-label="Footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <p class="footer__text">We'd love to connect for any musical opportunities you have in mind or just to chat. Check out our socials below.</p>
+        <a href="https://instagram.com/anatolequartet" class="footer__instagram" target="_blank" rel="noopener noreferrer" aria-label="Anatole Quartet on Instagram">
+          <svg class="footer__ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          @ANATOLEQUARTET
+        </a>
+      </div>
+
+      <div class="footer__right">
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="index.html" class="footer__nav-link">Home</a>
+          <a href="about.html" class="footer__nav-link">About</a>
+          <a href="gallery.html" class="footer__nav-link">Gallery</a>
+        </nav>
+        <button class="footer__up-btn" id="upBtn" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer__ghost" aria-hidden="true">ANATOLE</div>
+  </footer>
+
+  <script src="scripts/about.js"></script>
+  <script src="scripts/transitions.js"></script>
+</body>
+</html>

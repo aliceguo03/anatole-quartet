@@ -1,0 +1,63 @@
+:root {
+  /* Neutrals */
+  --color-surface: #FFFDFA;
+  --color-elevated-surface: #F5F0E8;
+  --color-rule-light: #DDD6C8;
+  --color-muted-text: #A89E90;
+  --color-secondary-light: #5A5248;
+  --color-secondary-dark: #2A2420;
+  --color-body-text: #141210;
+
+  /* Primary Accent — Vermillion */
+  --color-blush-tint: #FDF0EB;
+  --color-pale-wash: #F8D8CC;
+  --color-warm-rose: #EBA888;
+  --color-terracotta: #D06030;
+  --color-vermillion: #B84828;
+  --color-wine-red: #982018;
+  --color-deep-ember: #3A0C08;
+
+  /* Secondary Accent — Candlelight */
+  --color-dawn-gold: #FEF4E4;
+  --color-pale-ember: #FAE0A0;
+  --color-candlelight: #F0C050;
+  --color-amber: #D88010;
+  --color-bonfire: #B85800;
+  --color-burnt-sienna: #903800;
+  --color-coffee-brown: #301400;
+
+  /* Secondary Accent — Prussian Blue */
+  --color-sky-mist: #EBF0F8;
+  --color-pale-blue: #C8D8F0;
+  --color-steel-blue: #8AAAD8;
+  --color-ocean: #4070A8;
+  --color-prussian: #2A5080;
+  --color-deep-navy: #1A3860;
+  --color-deep-blue: #0A1828;
+
+  /* Typography */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  --text-display-1: 120px;
+  --text-display-2: 96px;
+  --text-display-3: 96px;
+  --text-display-4: 72px;
+  --text-display-5: 72px;
+
+  --text-h1: 48px;
+  --text-h2: 48px;
+  --text-h3: 36px;
+  --text-h4: 36px;
+  --text-h5: 30px;
+  --text-h6: 24px;
+
+  --text-body-l: 24px;
+  --text-body-m: 20px;
+  --text-body-s: 16px;
+  --text-body-emphasis: 16px;
+
+  --text-caption-l: 14px;
+  --text-caption-m: 12px;
+  --text-eyebrow: 10px;
+}

@@ -1,0 +1,567 @@
+/* ─── Scroll-locked hero wrapper ─────────────────────────────── */
+/* 200vh creates the locked scroll budget. The sticky inner panel
+   stays pinned while scroll progress drives the text reveals. */
+.about-hero-wrap {
+  position: relative;
+  height: 200vh;
+}
+
+.about-hero {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-secondary-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.about-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  filter: saturate(0);
+  display: block;
+}
+
+.about-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* ─── Content: bottom-anchored flex column ───────────────────── */
+/* Flex child of .about-hero — pushed to the bottom by justify-content: flex-end.
+   Stages 2 & 3 start at height 0 and grow, pushing earlier stages up. */
+.about-hero__content {
+  position: relative;
+  z-index: 1;
+  width: min(560px, calc(100vw - 96px));
+  margin: 0 auto;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ─── Stage base: grid height-animation + opacity/translate ──── */
+/* margin-top drives the gap between stages. It starts at 0 so
+   collapsed stages truly contribute 0 height (avoids the padding-
+   inside-inner-div bug where some browsers don't fully collapse a
+   grid 0fr row when the item itself carries padding). */
+.about-hero__stage {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(10px);
+  margin-top: 0;
+  transition:
+    grid-template-rows 600ms ease,
+    margin-top         600ms ease,
+    opacity            800ms ease,
+    transform          800ms ease;
+  width: 100%;
+}
+
+.about-hero__stage-inner {
+  overflow: hidden;
+}
+
+/* Stage 1 always occupies its natural height so the bottom
+   anchor position is established before any scrolling. */
+#aboutStage1 {
+  grid-template-rows: 1fr;
+}
+
+.about-hero__stage.visible {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gap above stages 2 & 3 — only present once they are visible */
+#aboutStage2.visible,
+#aboutStage3.visible {
+  margin-top: 80px;
+}
+
+/* ─── Stage typography ───────────────────────────────────────── */
+.about-hero__pronunciation {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(28px, 3.5vw, 38px);
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.about-hero__phonetic { color: var(--color-vermillion); }
+.about-hero__pos      { color: var(--color-muted-text); }
+
+.about-hero__def {
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.03em;
+  line-height: 1.72;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.about-hero__body {
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.03em;
+  line-height: 1.72;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ─── Hero responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .about-hero__content {
+    width: calc(100vw - 48px);
+    padding-bottom: 60px;
+  }
+  #aboutStage2.visible,
+  #aboutStage3.visible {
+    margin-top: 60px;
+  }
+}
+
+/* ─── The Music ──────────────────────────────────────────────── */
+.music {
+  background: var(--color-elevated-surface);
+  padding: 100px 0 80px;
+}
+.music__header {
+  text-align: center;
+  padding: 0 48px;
+  margin-bottom: 64px;
+}
+.music__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 400;
+  color: var(--color-body-text);
+  margin-bottom: 16px;
+}
+.music__title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--color-vermillion);
+  margin: 16px auto 0;
+}
+.music__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 300;
+  color: var(--color-muted-text);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ─── Music cards ────────────────────────────────────────────── */
+.music-card {
+  background: var(--color-surface);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.music-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(20, 18, 16, 0.09);
+}
+.music-card__img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  flex-shrink: 0;
+}
+.music-card__body {
+  padding: 36px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+.music-card__composer {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--color-body-text);
+  margin-bottom: 8px;
+}
+.music-card__piece {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--color-vermillion);
+  margin-bottom: 28px;
+  line-height: 1.3;
+}
+.music-card__quote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--color-secondary-light);
+  margin-bottom: 14px;
+  flex: 1;
+}
+.music-card__attr {
+  font-family: var(--font-body);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-vermillion);
+  text-align: right;
+  align-self: flex-end;
+  margin-bottom: 28px;
+}
+
+/* Inherits all event-card__btn styles from main.css — only
+   override alignment so the button spans the full card width. */
+.music-card__btn {
+  align-self: stretch;
+  display: block;
+  text-align: center;
+  padding: 14px 24px;
+}
+
+/* Borodin: shift crop downward to show the couple, not the sky */
+#musicTrack .carousel__slide:nth-child(3) .music-card__img {
+  object-position: center 75%;
+}
+
+/* ─── Music slider fill: 4 slides ───────────────────────────── */
+#musicSliderFill { width: 25%; }
+
+/* ─── Music section responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+  .music { padding: 80px 0 64px; }
+  .music__header { padding: 0 24px; margin-bottom: 48px; }
+  .music-card__body { padding: 28px 28px 32px; }
+  .music-card__img { height: 130px; }
+}
+@media (max-width: 480px) {
+  .music-card__composer { font-size: 26px; }
+  .music-card__quote { font-size: 16px; }
+}
+
+/* ─── The Team ───────────────────────────────────────────────── */
+.team {
+  background: var(--color-surface);
+  padding: 100px 0 80px;
+}
+
+.team__header {
+  text-align: center;
+  padding: 0 48px;
+  margin-bottom: 64px;
+}
+
+.team__title {
+  font-family: var(--font-display);
+  font-size: var(--text-h1);
+  font-weight: 400;
+  color: var(--color-body-text);
+  margin-bottom: 16px;
+}
+
+.team__title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: var(--color-amber);
+  margin: 16px auto 0;
+}
+
+.team__subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 300;
+  color: var(--color-muted-text);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+/* Accordion outer wrapper */
+.team__accordion-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.team__accordion {
+  border: 1px solid var(--color-rule-light);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Member rows */
+.team__member {
+  border-bottom: 1px solid var(--color-rule-light);
+}
+.team__member:last-child {
+  border-bottom: none;
+}
+
+/* Trigger button */
+.team__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  text-align: left;
+}
+
+.team__trigger:hover,
+.team__member--open .team__trigger {
+  background-color: var(--color-elevated-surface);
+}
+
+/* Left side: name · instrument */
+.team__trigger-left {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.team__name {
+  font-family: var(--font-display);
+  font-size: var(--text-h5);
+  font-weight: 400;
+  color: var(--color-body-text);
+}
+
+.team__dot {
+  font-family: var(--font-display);
+  font-size: var(--text-h5);
+  color: var(--color-vermillion);
+  line-height: 1;
+}
+
+.team__instrument {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--text-h5);
+  color: var(--color-terracotta);
+}
+
+/* Right side: expand label + arrow */
+.team__trigger-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: 24px;
+}
+
+.team__expand-text {
+  font-family: var(--font-body);
+  font-size: var(--text-caption-m);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-terracotta);
+}
+
+.team__arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--color-terracotta);
+  transform: rotate(180deg);
+  transition: transform 350ms ease;
+  flex-shrink: 0;
+}
+
+.team__member--open .team__arrow {
+  transform: rotate(0deg);
+}
+
+/* Expandable body */
+.team__body {
+  height: 0;
+  overflow: hidden;
+  transition: height 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.team__member--open .team__body {
+  height: var(--team-drawer-height, auto);
+}
+
+/* Body inner: bio + photo two-column */
+.team__body-inner {
+  display: flex;
+  gap: 60px;
+  padding: 14px 40px 44px;
+  background: var(--color-elevated-surface);
+}
+
+.team__bio-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.team__bio {
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.team__bio p {
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 300;
+  color: var(--color-secondary-dark);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.team__bio p:last-child {
+  margin-bottom: 0;
+}
+
+/* Facts grid */
+.team__facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 24px;
+  align-items: baseline;
+}
+
+.team__fact-label {
+  font-family: var(--font-body);
+  font-size: var(--text-caption-l);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-terracotta);
+  white-space: nowrap;
+}
+
+.team__fact-value {
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 300;
+  color: var(--color-secondary-light);
+}
+
+/* Photo column */
+.team__photo-col {
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.team__photo-wrap {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.team__photo {
+  display: block;
+  width: auto;
+  max-width: 280px;
+  height: auto;
+  border-radius: 0;
+  transition: transform 200ms ease-out;
+}
+
+.team__photo-wrap:hover .team__photo {
+  transform: scale(1.03);
+}
+
+.team__photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 200ms ease-out;
+  pointer-events: none;
+}
+
+.team__photo-wrap:hover .team__photo-overlay {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.team__photo-socials {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.team__photo-wrap:hover .team__photo-socials {
+  opacity: 1;
+}
+
+.team__photo-social-link {
+  color: var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+}
+
+.team__photo-social-link svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ─── Team responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .team { padding: 80px 0 64px; }
+  .team__header { padding: 0 24px; margin-bottom: 48px; }
+  .team__accordion-wrap { padding: 0 24px; }
+  .team__trigger { padding: 20px 24px; }
+  .team__body-inner {
+    flex-direction: column-reverse;
+    gap: 32px;
+    padding: 10px 24px 32px;
+  }
+  .team__photo-wrap { width: 100%; }
+  .team__photo {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .team__accordion-wrap { padding: 0 16px; }
+  .team__name,
+  .team__instrument { font-size: 22px; }
+  .team__dot { font-size: 22px; }
+  .team__trigger-left { gap: 10px; }
+}

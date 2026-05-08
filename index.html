@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anatole Quartet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/anatolelogo.png" type="image/png">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <script>!function(){var a=sessionStorage.getItem('aq_trans');a&&(sessionStorage.removeItem('aq_trans'),document.documentElement.className+=' aq-enter-'+a+' aq-skip-intro');}();</script>
+</head>
+<body>
+
+  <!-- Intro curtain overlay -->
+  <div id="introOverlay" class="intro-overlay" aria-hidden="true">
+    <div class="intro-overlay__half intro-overlay__half--left">
+      <div class="intro-overlay__inner">
+        <span class="intro-overlay__wordmark">ANATOLE</span>
+      </div>
+    </div>
+    <div class="intro-overlay__half intro-overlay__half--right">
+      <div class="intro-overlay__inner">
+        <span class="intro-overlay__wordmark">ANATOLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav" aria-label="Primary navigation">
+    <a href="index.html" class="nav__logo-link" aria-label="Anatole Quartet home">
+      <img src="assets/images/anatolelogo.png" alt="Anatole Quartet" class="nav__logo-img">
+    </a>
+    <div class="nav__links">
+      <a href="index.html" class="nav__link nav__link--active">Home</a>
+      <a href="about.html" class="nav__link">About</a>
+      <a href="gallery.html" class="nav__link">Gallery</a>
+      <a href="#footer" class="nav__link">Contact <span class="nav__arrow">↓</span></a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero" aria-label="Hero">
+    <div class="hero__media" id="heroMedia">
+      <img
+        src="assets/images/hero.jpg"
+        alt="The Anatole Quartet"
+        class="hero__image"
+        id="heroImage"
+        draggable="false"
+      >
+      <div class="hero__overlay" aria-hidden="true"></div>
+    </div>
+    <div class="hero__content" aria-hidden="true">
+      <h1 class="hero__title" id="heroTitle">ANATOLE</h1>
+      <p class="hero__tagline" id="heroTagline">Music at the hour of sunrise.</p>
+      <a href="#performances" class="hero__cta" id="heroCta">Learn More</a>
+    </div>
+  </section>
+
+  <!-- Our Performances -->
+  <section class="performances" id="performances" aria-label="Our Performances">
+    <div class="performances__header reveal">
+      <h2 class="performances__title">Our Performances</h2>
+      <p class="performances__subtitle">See what we've been up to recently and join us at one of our future performances.</p>
+    </div>
+
+    <div class="carousel" id="carousel" role="region" aria-label="Upcoming performances">
+      <div class="carousel__filters" id="carouselFilters">
+        <button class="carousel__filter-btn carousel__filter-btn--active" data-filter="upcoming" aria-pressed="true">Upcoming</button>
+        <button class="carousel__filter-btn" data-filter="past" aria-pressed="false">Past</button>
+      </div>
+
+      <div class="carousel__clip">
+      <div class="carousel__viewport" id="carouselViewport">
+        <div class="carousel__track" id="carouselTrack">
+
+          <!-- Card 1 -->
+          <div class="carousel__slide" role="group" aria-label="Performance 1" data-date="2026-05-08" data-location="Casa de Mañana, La Jolla" data-location-url="https://maps.google.com/?q=Casa+de+Manana+La+Jolla">
+            <article class="event-card reveal">
+              <div class="event-card__date">
+                <div class="event-card__date-left">
+                  <span class="event-card__day">08</span>
+                  <div class="event-card__meta">
+                    <span class="event-card__month">May</span>
+                    <span class="event-card__year">2026</span>
+                  </div>
+                </div>
+                <span class="event-card__time">10:00 AM</span>
+              </div>
+              <h3 class="event-card__title">La Jolla Symphony &amp; Chorus: Casa de Ma&#xF1;ana</h3>
+              <p class="event-card__desc">The Anatole Quartet joins the La Jolla Symphony &amp; Chorus for a performance at the historic Casa de Ma&#xF1;ana in La Jolla. We hope to see you there!</p>
+              <div class="event-card__actions">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=La+Jolla+Symphony+%26+Chorus%3A+Casa+de+Ma%C3%B1ana&dates=20260508T100000%2F20260508T120000&details=The+Anatole+Quartet+joins+the+La+Jolla+Symphony+%26+Chorus+for+a+performance+at+the+historic+Casa+de+Ma%C3%B1ana+in+La+Jolla.&location=Casa+de+Ma%C3%B1ana%2C+La+Jolla%2C+CA" class="event-card__btn event-card__btn--primary" target="_blank" rel="noopener">Add to Calendar</a>
+                <a href="https://maps.google.com/?q=Casa+de+Manana+La+Jolla" class="event-card__location" target="_blank" rel="noopener">
+                  <svg class="event-card__pin-icon" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75C5.03 6.75 4.25 5.97 4.25 5S5.03 3.25 6 3.25 7.75 4.03 7.75 5 6.97 6.75 6 6.75z"/></svg>
+                  Casa de Mañana, La Jolla
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="carousel__slide" role="group" aria-label="Performance 2" data-date="2026-05-17" data-location="UC San Diego Conrad Prebys Music Center" data-location-url="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center">
+            <article class="event-card reveal">
+              <div class="event-card__date">
+                <div class="event-card__date-left">
+                  <span class="event-card__day">17</span>
+                  <div class="event-card__meta">
+                    <span class="event-card__month">May</span>
+                    <span class="event-card__year">2026</span>
+                  </div>
+                </div>
+                <span class="event-card__time">3:45 PM</span>
+              </div>
+              <h3 class="event-card__title">The Arcades Festival</h3>
+              <p class="event-card__desc">The Anatole Quartet performs Felix Mendelssohn's String Quartet No.&nbsp;6 in F Minor, one of his final and most personal works, at the annual Arcades Festival, a celebration of student chamber music.</p>
+              <div class="event-card__actions">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Arcades+Festival&dates=20260517T154500%2F20260517T174500&details=The+Anatole+Quartet+performs+Felix+Mendelssohn%27s+String+Quartet+No.+6+in+F+Minor+at+the+annual+Arcades+Festival%2C+a+celebration+of+student+chamber+music.&location=UC+San+Diego" class="event-card__btn event-card__btn--primary" target="_blank" rel="noopener">Add to Calendar</a>
+                <a href="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center" class="event-card__location" target="_blank" rel="noopener">
+                  <svg class="event-card__pin-icon" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75C5.03 6.75 4.25 5.97 4.25 5S5.03 3.25 6 3.25 7.75 4.03 7.75 5 6.97 6.75 6 6.75z"/></svg>
+                  UC San Diego Conrad Prebys Music Center
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="carousel__slide" role="group" aria-label="Performance 3" data-date="2026-05-22" data-location="UC San Diego Conrad Prebys Music Center Recital Hall" data-location-url="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center+Recital+Hall">
+            <article class="event-card reveal">
+              <div class="event-card__date">
+                <div class="event-card__date-left">
+                  <span class="event-card__day">22</span>
+                  <div class="event-card__meta">
+                    <span class="event-card__month">May</span>
+                    <span class="event-card__year">2026</span>
+                  </div>
+                </div>
+                <span class="event-card__time">7:00 PM</span>
+              </div>
+              <h3 class="event-card__title">The Anatole Quartet Debut Recital</h3>
+              <p class="event-card__desc">An evening of string quartets by Tchaikovsky, Borodin, Hisaishi, and Mendelssohn. Join us for our first ever recital, free of cost, and stay for the reception after.</p>
+              <div class="event-card__actions">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=The+Anatole+Quartet+Debut+Recital&dates=20260522T190000%2F20260522T210000&details=An+evening+of+string+quartets+by+Tchaikovsky%2C+Borodin%2C+Hisaishi%2C+and+Mendelssohn.+Join+us+for+our+first+ever+recital%2C+free+of+cost%2C+and+stay+for+the+reception+after.&location=UC+San+Diego+Department+of+Music" class="event-card__btn event-card__btn--primary" target="_blank" rel="noopener">Add to Calendar</a>
+                <a href="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center+Recital+Hall" class="event-card__location" target="_blank" rel="noopener">
+                  <svg class="event-card__pin-icon" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75C5.03 6.75 4.25 5.97 4.25 5S5.03 3.25 6 3.25 7.75 4.03 7.75 5 6.97 6.75 6 6.75z"/></svg>
+                  UC San Diego Conrad Prebys Music Center Recital Hall
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Card 4 — upcoming -->
+          <div class="carousel__slide" role="group" aria-label="Performance 4" data-date="2026-05-27" data-location="UC San Diego Muir Fields" data-location-url="https://maps.google.com/?q=UC+San+Diego+Muir+Fields">
+            <article class="event-card reveal">
+              <div class="event-card__date">
+                <div class="event-card__date-left">
+                  <span class="event-card__day">27</span>
+                  <div class="event-card__meta">
+                    <span class="event-card__month">May</span>
+                    <span class="event-card__year">2026</span>
+                  </div>
+                </div>
+                <span class="event-card__time">TBD</span>
+              </div>
+              <h3 class="event-card__title">Muir You and AAPI Festival</h3>
+              <p class="event-card__desc">Joining UCSD's celebration of Asian and Pacific Islander cultures with Joe Hisaishi's A Town with an Ocean View — a piece that, for all of us, means something personal about the city we ended up in together.</p>
+              <div class="event-card__actions">
+                <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Muir+You+and+AAPI+Festival&dates=20260527%2F20260528&details=Joining+UCSD%27s+celebration+of+Asian+and+Pacific+Islander+cultures+with+Joe+Hisaishi%27s+A+Town+with+an+Ocean+View.&location=UC+San+Diego+Muir+Fields" class="event-card__btn event-card__btn--primary" target="_blank" rel="noopener">Add to Calendar</a>
+                <a href="https://maps.google.com/?q=UC+San+Diego+Muir+Fields" class="event-card__location" target="_blank" rel="noopener">
+                  <svg class="event-card__pin-icon" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75C5.03 6.75 4.25 5.97 4.25 5S5.03 3.25 6 3.25 7.75 4.03 7.75 5 6.97 6.75 6 6.75z"/></svg>
+                  UC San Diego Muir Fields
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Card 5 — past: March 6, 2026 -->
+          <div class="carousel__slide" role="group" aria-label="Performance 5" data-date="2026-03-06" data-location="UC San Diego Conrad Prebys Music Center Recital Hall" data-location-url="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center+Recital+Hall">
+            <article class="event-card reveal">
+              <div class="event-card__date">
+                <div class="event-card__date-left">
+                  <span class="event-card__day">06</span>
+                  <div class="event-card__meta">
+                    <span class="event-card__month">March</span>
+                    <span class="event-card__year">2026</span>
+                  </div>
+                </div>
+                <span class="event-card__time">7:00 PM</span>
+              </div>
+              <h3 class="event-card__title">UC San Diego 2026 Winter Undergraduate Forum</h3>
+              <p class="event-card__desc">Our second appearance in UCSD's quarterly undergraduate showcase, and our first public performance of Mendelssohn's String Quartet No. 6, the centerpiece of our debut recital program.</p>
+              <div class="event-card__actions">
+                <a href="#" class="event-card__btn event-card__btn--primary">Add to Calendar</a>
+                <a href="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center+Recital+Hall" class="event-card__location" target="_blank" rel="noopener">
+                  <svg class="event-card__pin-icon" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75C5.03 6.75 4.25 5.97 4.25 5S5.03 3.25 6 3.25 7.75 4.03 7.75 5 6.97 6.75 6 6.75z"/></svg>
+                  UC San Diego Conrad Prebys Music Center Recital Hall
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <!-- Card 6 — past: November 21, 2025 -->
+          <div class="carousel__slide" role="group" aria-label="Performance 6" data-date="2025-11-21" data-location="UC San Diego Conrad Prebys Music Center Experimental Theater" data-location-url="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center+Experimental+Theater">
+            <article class="event-card reveal">
+              <div class="event-card__date">
+                <div class="event-card__date-left">
+                  <span class="event-card__day">21</span>
+                  <div class="event-card__meta">
+                    <span class="event-card__month">November</span>
+                    <span class="event-card__year">2025</span>
+                  </div>
+                </div>
+                <span class="event-card__time">7:00 PM</span>
+              </div>
+              <h3 class="event-card__title">UC San Diego 2025 Fall Undergraduate Forum</h3>
+              <p class="event-card__desc">The very first time the four of us played together on stage, for the last movement of the Dvořák American Quartet, and the beginning of everything that followed.</p>
+              <div class="event-card__actions">
+                <a href="#" class="event-card__btn event-card__btn--primary">Add to Calendar</a>
+                <a href="https://maps.google.com/?q=UC+San+Diego+Conrad+Prebys+Music+Center+Experimental+Theater" class="event-card__location" target="_blank" rel="noopener">
+                  <svg class="event-card__pin-icon" viewBox="0 0 12 16" fill="currentColor" aria-hidden="true"><path d="M6 0C3.24 0 1 2.24 1 5c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.75C5.03 6.75 4.25 5.97 4.25 5S5.03 3.25 6 3.25 7.75 4.03 7.75 5 6.97 6.75 6 6.75z"/></svg>
+                  UC San Diego Conrad Prebys Music Center Experimental Theater
+                </a>
+              </div>
+            </article>
+          </div>
+
+        </div><!-- /track -->
+      </div><!-- /viewport -->
+      </div><!-- /clip -->
+
+      <div class="carousel__empty-state" id="carouselEmptyState" role="status" aria-live="polite">
+        <p class="carousel__empty-state-text" id="carouselEmptyMsg"></p>
+      </div>
+
+      <div class="carousel__slider-wrap" id="carouselSliderWrap" aria-label="Carousel position">
+        <div class="carousel__slider-track">
+          <div class="carousel__slider-fill" id="carouselSliderFill"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Are -->
+  <section class="about" id="about" aria-label="Who We Are">
+    <div class="about__inner">
+      <div class="about__header reveal">
+        <h2 class="about__title">Who We Are</h2>
+        <div class="about__rule" aria-hidden="true"></div>
+      </div>
+      <div class="about__body">
+        <div class="about__text reveal">
+          <p class="about__paragraph">The Anatole Quartet emerged from the UCSD chamber music scene in Fall 2025, founded by four students who share a dedication to making great music and enjoying the process.</p>
+          <p class="about__paragraph">Self-directed and student-run, the quartet regularly performs at the Department of Music Undergraduate Forums and has appeared as guests of the La Jolla Symphony &amp; Chorus.</p>
+          <a href="about.html" class="about__btn">Meet the Quartet</a>
+        </div>
+        <div class="about__image-wrap reveal">
+          <img src="assets/images/quartet-walking.jpg" alt="The Anatole Quartet walking on campus" class="about__image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer" aria-label="Footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <p class="footer__text">We'd love to connect for any musical opportunities you have in mind or just to chat. Check out our socials below.</p>
+        <a href="https://instagram.com/anatolequartet" class="footer__instagram" target="_blank" rel="noopener noreferrer" aria-label="Anatole Quartet on Instagram">
+          <svg class="footer__ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          @ANATOLEQUARTET
+        </a>
+      </div>
+
+      <div class="footer__right">
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="index.html" class="footer__nav-link">Home</a>
+          <a href="about.html" class="footer__nav-link">About</a>
+          <a href="gallery.html" class="footer__nav-link">Gallery</a>
+        </nav>
+        <button class="footer__up-btn" id="upBtn" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer__ghost" aria-hidden="true">ANATOLE</div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script src="scripts/transitions.js"></script>
+</body>
+</html>

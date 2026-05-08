@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Anatole Quartet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/images/anatolelogo.png" type="image/png">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <script>!function(){var a=sessionStorage.getItem('aq_trans');a&&(sessionStorage.removeItem('aq_trans'),document.documentElement.className+=' aq-enter-'+a+' aq-skip-intro');}();</script>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav" aria-label="Primary navigation">
+    <a href="index.html" class="nav__logo-link" aria-label="Anatole Quartet home">
+      <img src="assets/images/anatolelogo.png" alt="Anatole Quartet" class="nav__logo-img">
+    </a>
+    <div class="nav__links">
+      <a href="index.html" class="nav__link">Home</a>
+      <a href="about.html" class="nav__link">About</a>
+      <a href="gallery.html" class="nav__link nav__link--active">Gallery</a>
+      <a href="#footer" class="nav__link">Contact <span class="nav__arrow">↓</span></a>
+    </div>
+  </nav>
+
+  <!-- Gallery Hero -->
+  <section class="gallery-hero" id="galleryHero" aria-label="Gallery hero">
+    <img
+      src="assets/images/galleryhero.JPG"
+      alt="The Anatole Quartet"
+      class="gallery-hero__image"
+      draggable="false"
+    >
+    <div class="gallery-hero__overlay" aria-hidden="true"></div>
+    <div class="gallery-hero__scroll-indicator" id="scrollIndicator" aria-hidden="true">
+      <span class="gallery-hero__scroll-text">Scroll down to see more</span>
+      <span class="gallery-hero__scroll-arrow">↓</span>
+    </div>
+  </section>
+
+  <!-- Photo Grid -->
+  <section class="gallery" aria-label="Photo gallery">
+    <div class="gallery__grid" id="galleryGrid">
+      <!-- Items injected by gallery.js -->
+    </div>
+  </section>
+
+  <!-- Photographer credit -->
+  <div class="gallery__credit">
+    <p class="gallery__credit-text">The quartet thanks Jeff Antony for capturing these moments.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer" aria-label="Footer">
+    <div class="footer__inner">
+      <div class="footer__left">
+        <p class="footer__text">We'd love to connect for any musical opportunities you have in mind or just to chat. Check out our socials below.</p>
+        <a href="https://instagram.com/anatolequartet" class="footer__instagram" target="_blank" rel="noopener noreferrer" aria-label="Anatole Quartet on Instagram">
+          <svg class="footer__ig-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          @ANATOLEQUARTET
+        </a>
+      </div>
+
+      <div class="footer__right">
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="index.html" class="footer__nav-link">Home</a>
+          <a href="about.html" class="footer__nav-link">About</a>
+          <a href="gallery.html" class="footer__nav-link">Gallery</a>
+        </nav>
+        <button class="footer__up-btn" id="upBtn" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer__ghost" aria-hidden="true">ANATOLE</div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script src="scripts/gallery.js"></script>
+  <script src="scripts/transitions.js"></script>
+</body>
+</html>
