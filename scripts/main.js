@@ -318,9 +318,9 @@ if (carouselViewport) {
     }
   }
 
-  carouselViewport.addEventListener('touchstart', e => { if (isMobileCarousel()) return; onDragStart(e.touches[0].clientX); }, { passive: true });
-  carouselViewport.addEventListener('touchmove',  e => { if (isMobileCarousel()) return; onDragMove(e.touches[0].clientX); },  { passive: true });
-  carouselViewport.addEventListener('touchend',   e => { if (isMobileCarousel()) return; onDragEnd(); });
+  carouselViewport.addEventListener('touchstart', e => { onDragStart(e.touches[0].clientX); }, { passive: true });
+  carouselViewport.addEventListener('touchmove',  e => { onDragMove(e.touches[0].clientX); },  { passive: true });
+  carouselViewport.addEventListener('touchend',   () => { onDragEnd(); });
   carouselViewport.addEventListener('mousedown',  e => { onDragStart(e.clientX); e.preventDefault(); });
   window.addEventListener('mousemove', e => { if (isDragging) onDragMove(e.clientX); });
   window.addEventListener('mouseup',   onDragEnd);

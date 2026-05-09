@@ -202,9 +202,9 @@ if (musicViewport) {
     }
   }
 
-  musicViewport.addEventListener('touchstart', e => { if (isMobileMusic()) return; onMusicDragStart(e.touches[0].clientX); }, { passive: true });
-  musicViewport.addEventListener('touchmove',  e => { if (isMobileMusic()) return; onMusicDragMove(e.touches[0].clientX); },  { passive: true });
-  musicViewport.addEventListener('touchend',   e => { if (isMobileMusic()) return; onMusicDragEnd(); });
+  musicViewport.addEventListener('touchstart', e => { onMusicDragStart(e.touches[0].clientX); }, { passive: true });
+  musicViewport.addEventListener('touchmove',  e => { onMusicDragMove(e.touches[0].clientX); },  { passive: true });
+  musicViewport.addEventListener('touchend',   () => { onMusicDragEnd(); });
   musicViewport.addEventListener('mousedown',  e => { onMusicDragStart(e.clientX); e.preventDefault(); });
   window.addEventListener('mousemove', e => { if (musicDragging) onMusicDragMove(e.clientX); });
   window.addEventListener('mouseup',   onMusicDragEnd);
