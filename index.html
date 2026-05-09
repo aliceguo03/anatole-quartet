@@ -28,6 +28,21 @@
     </div>
   </div>
 
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+    <button class="nav-overlay__close" id="navOverlayClose" aria-label="Close navigation menu">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <nav aria-label="Mobile navigation">
+      <a href="index.html" class="nav-overlay__link nav-overlay__link--active">Home</a>
+      <a href="about.html" class="nav-overlay__link">About</a>
+      <a href="gallery.html" class="nav-overlay__link">Gallery</a>
+      <a href="#footer" class="nav-overlay__link">Contact</a>
+    </nav>
+  </div>
+
   <!-- Navigation -->
   <nav class="nav" id="nav" aria-label="Primary navigation">
     <a href="index.html" class="nav__logo-link" aria-label="Anatole Quartet home">
@@ -39,18 +54,28 @@
       <a href="gallery.html" class="nav__link">Gallery</a>
       <a href="#footer" class="nav__link">Contact <span class="nav__arrow">↓</span></a>
     </div>
+    <button class="nav__hamburger" id="navHamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
   </nav>
 
   <!-- Hero -->
   <section class="hero" id="hero" aria-label="Hero">
     <div class="hero__media" id="heroMedia">
-      <img
-        src="assets/images/hero.jpg"
-        alt="The Anatole Quartet"
-        class="hero__image"
-        id="heroImage"
-        draggable="false"
-      >
+      <picture>
+        <source media="(max-width: 768px)" srcset="assets/images/mobilehero.JPG" id="mobileHeroSource">
+        <img
+          src="assets/images/hero.jpg"
+          alt="The Anatole Quartet"
+          class="hero__image"
+          id="heroImage"
+          draggable="false"
+        >
+      </picture>
       <div class="hero__overlay" aria-hidden="true"></div>
     </div>
     <div class="hero__content" aria-hidden="true">

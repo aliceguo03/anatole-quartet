@@ -58,7 +58,7 @@ if (document.readyState === 'loading') {
   runEntryAnimation();
 }
 
-/* ─── Hero: Ken Burns + parallax ───────────────────────────── */
+/* ─── Hero: Ken Burns + parallax (desktop only) ─────────────── */
 const heroImage   = document.getElementById('heroImage');
 const heroSection = document.getElementById('hero');
 let rafId = null;
@@ -69,13 +69,13 @@ function animateHero(timestamp) {
   if (!heroImage) return;
   if (!heroStartTime) heroStartTime = timestamp;
   const elapsed    = (timestamp - heroStartTime) / 1000;
-  const scale      = 1 + Math.min(elapsed / 20, 1) * 0.08; // 1.0 → 1.08 over 20s
+  const scale      = 1 + Math.min(elapsed / 20, 1) * 0.08;
   const parallaxY  = window.scrollY * 0.4;
   heroImage.style.transform = `translateY(${parallaxY}px) scale(${scale})`;
   if (heroVisible) rafId = requestAnimationFrame(animateHero);
 }
 
-if (heroSection) {
+if (heroSection && !window.matchMedia('(hover: none)').matches) {
   new IntersectionObserver(([entry]) => {
     heroVisible = entry.isIntersecting;
     if (heroVisible && !rafId) rafId = requestAnimationFrame(animateHero);
@@ -84,6 +84,45 @@ if (heroSection) {
 
   rafId = requestAnimationFrame(animateHero);
 }
+
+/* ─── Mobile hero image: handle .JPG / .jpg capitalisation ──── */
+(function () {
+  var src = document.getElementById('mobileHeroSource');
+  if (!src || window.innerWidth > 768) return;
+  var test = new Image();
+  test.onerror = function () { src.srcset = 'assets/images/mobilehero.jpg'; };
+  test.src = 'assets/images/mobilehero.JPG';
+})();
+
+/* ─── Mobile nav overlay ─────────────────────────────────────── */
+(function () {
+  var hamburger = document.getElementById('navHamburger');
+  var overlay   = document.getElementById('navOverlay');
+  var closeBtn  = document.getElementById('navOverlayClose');
+  if (!hamburger || !overlay) return;
+
+  function openOverlay() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', openOverlay);
+  closeBtn.addEventListener('click', closeOverlay);
+  overlay.querySelectorAll('.nav-overlay__link').forEach(function (link) {
+    link.addEventListener('click', closeOverlay);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeOverlay();
+  });
+})();
 
 /* ─── Scroll-triggered reveals ──────────────────────────────── */
 const triggeredGroups = new WeakSet();
@@ -117,6 +156,8 @@ const filterBtns        = document.querySelectorAll('.carousel__filter-btn');
 const emptyStateEl      = document.getElementById('carouselEmptyState');
 const emptyMsgEl        = document.getElementById('carouselEmptyMsg');
 const GAP               = 24;
+const MOBILE_GAP        = 16;
+const MOBILE_PEEK       = 20; // px of adjacent card visible on mobile
 let current             = 0;
 let currentFilter       = 'upcoming';
 
@@ -188,13 +229,15 @@ function updateCarouselVisibility() {
   setSlideWidths();
 }
 
-/* Slide width: first card fills 100%, second card peeks at ~60%
-   viewport = 1 * slideWidth + GAP + 0.6 * slideWidth
-   → slideWidth = (viewport - GAP) / 1.6                         */
+function isMobileCarousel() { return window.innerWidth <= 768; }
+
 function setSlideWidths() {
-  const vpWidth    = carouselViewport.offsetWidth;
+  const vpWidth       = carouselViewport.offsetWidth;
   const visibleSlides = getVisibleSlides();
-  const slideWidth = (vpWidth - GAP) / 1.6;
+  const mobile        = isMobileCarousel();
+  const slideWidth    = mobile
+    ? Math.round(vpWidth * 0.80)
+    : (vpWidth - GAP) / 1.6;
 
   visibleSlides.forEach(s => { s.style.flexBasis = `${slideWidth}px`; });
   goToSlide(current, false);
@@ -206,7 +249,8 @@ function setSlideWidths() {
 function getSlideStep() {
   const visibleSlides = getVisibleSlides();
   if (visibleSlides.length === 0) return 0;
-  return visibleSlides[0].getBoundingClientRect().width + GAP;
+  const gap = isMobileCarousel() ? MOBILE_GAP : GAP;
+  return visibleSlides[0].getBoundingClientRect().width + gap;
 }
 
 function updateSlider() {
@@ -216,10 +260,14 @@ function updateSlider() {
 function goToSlide(index, animate = true) {
   const visibleSlides = getVisibleSlides();
   current = Math.max(0, Math.min(index, visibleSlides.length - 1));
+  const step   = getSlideStep();
+  const mobile = isMobileCarousel();
+  // On mobile, shift back by (gap + peek) so the previous card peeks in on the left
+  const offset = current * step - (mobile && current > 0 ? MOBILE_GAP + MOBILE_PEEK : 0);
   if (!animate) track.style.transition = 'none';
-  track.style.transform = `translateX(-${current * getSlideStep()}px)`;
+  track.style.transform = `translateX(-${offset}px)`;
   if (!animate) {
-    track.getBoundingClientRect(); // force reflow
+    track.getBoundingClientRect();
     track.style.transition = '';
   }
   if (!animate) sliderFill.style.transition = 'none';
@@ -279,7 +327,7 @@ if (carouselViewport) {
     if (!isDragging) return;
     isDragging = false;
     track.style.transition = '';
-    if (Math.abs(dragDeltaX) > 80) {
+    if (Math.abs(dragDeltaX) > (isMobileCarousel() ? 30 : 80)) {
       goToSlide(dragDeltaX < 0 ? current + 1 : current - 1);
     } else {
       goToSlide(current);
