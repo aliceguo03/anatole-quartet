@@ -38,6 +38,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   transform: translateX(0);
 }
 
+.mobile-br { display: none; }
+
 /* ─── Reveal on scroll ──────────────────────────────────────── */
 .reveal {
   opacity: 0;
@@ -279,7 +281,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   color: var(--color-body-text);
   padding: 10px 24px;
   border: 1px solid var(--color-body-text);
-  border-radius: 20px;
+  border-radius: 0;
   background: transparent;
   cursor: pointer;
   transition: all 200ms ease;
@@ -774,6 +776,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   /* Hero */
   .hero__content { padding: 0 24px; top: min(52%, calc(100% - 280px)); }
   .hero__tagline { font-size: 16px; margin-top: 12px; }
+  .hero__image { height: 100%; object-position: center center; }
   .hero__cta {
     margin-top: 20px;
     padding: 12px 28px;
@@ -840,9 +843,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   /* Who We Are */
   .about { padding: 56px 24px; }
   .about__header { margin-bottom: 24px; }
+  .about__title { font-size: 30px; }
   .about__body { grid-template-columns: 1fr; gap: 32px; }
   .about__image-wrap { order: -1; }
-  .about__image { height: 280px; }
+  .about__image { height: 280px; object-position: center center; }
   .about__paragraph {
     font-size: var(--text-caption-l);
     text-align: center;
@@ -853,6 +857,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
     display: inline-flex;
     align-items: center;
   }
+
+  .mobile-br { display: inline; }
 
   /* Footer */
   .footer { padding: 40px 24px 0; }
@@ -1037,6 +1043,10 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   color: var(--color-muted-text);
   letter-spacing: 0.02em;
 }
+@media (max-width: 768px) {
+  .gallery__credit { padding: 16px 20px; }
+  .gallery__credit-text { font-size: 11px; letter-spacing: 0; }
+}
 
 /* ─── Intro curtain overlay ─────────────────────────────────── */
 .intro-overlay {
@@ -1061,13 +1071,14 @@ html.aq-skip-intro .intro-overlay { display: none; }
 .intro-overlay__inner {
   position: absolute;
   top: min(55%, calc(100% - 350px));
-  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 0 48px;
-  text-align: center;
   pointer-events: none;
 }
-.intro-overlay__half--left  .intro-overlay__inner { left: 0; }
-.intro-overlay__half--right .intro-overlay__inner { left: -50vw; }
+.intro-overlay__half--left  .intro-overlay__inner { left: 0;     right: -100%; }
+.intro-overlay__half--right .intro-overlay__inner { left: -100%; right: 0; }
 
 .intro-overlay__wordmark {
   display: block;

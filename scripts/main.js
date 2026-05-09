@@ -34,6 +34,12 @@ function runEntryAnimation() {
   // the wordmark briefly renders in the fallback serif before swapping to
   // Playfair Display, which would look different from the hero title underneath.
   document.fonts.ready.then(() => {
+    // Pin overlay inners to the exact viewport position of the hero title
+    // after fonts render, so the wordmark sits pixel-perfectly over the title.
+    const titleRect = heroTitle.getBoundingClientRect();
+    document.querySelectorAll('.intro-overlay__inner').forEach(inner => {
+      inner.style.top = titleRect.top + 'px';
+    });
     document.querySelectorAll('.intro-overlay__wordmark').forEach(w => {
       w.style.opacity = '1';
     });
@@ -296,33 +302,47 @@ if (carouselViewport) {
   sliderWrap.addEventListener('touchmove',  e => seekFromEvent(e.touches[0]), { passive: true });
 
   /* Carousel swipe / drag */
-  let isDragging = false, dragStartX = 0, dragDeltaX = 0;
+  let isDragging = false, dragStartX = 0, dragStartY = 0, dragDeltaX = 0, dragStartOffset = 0, dragDirection = null;
 
-  function onDragStart(x) {
-    isDragging = true; dragStartX = x; dragDeltaX = 0;
+  function onDragStart(x, y, needsDir) {
+    isDragging = true; dragStartX = x; dragStartY = y; dragDeltaX = 0;
+    dragDirection = needsDir ? null : 'h';
+    const mobile = isMobileCarousel();
+    dragStartOffset = current * getSlideStep() - (mobile && current > 0 ? MOBILE_GAP + MOBILE_PEEK : 0);
     track.style.transition = 'none';
   }
-  function onDragMove(x) {
+  function onDragMove(x, y, e) {
     if (!isDragging) return;
+    if (dragDirection === null) {
+      const ax = Math.abs(x - dragStartX), ay = Math.abs(y - dragStartY);
+      if (ax < 4 && ay < 4) return;
+      dragDirection = ax >= ay ? 'h' : 'v';
+    }
+    if (dragDirection === 'v') { isDragging = false; track.style.transition = ''; return; }
+    if (e && e.cancelable) e.preventDefault();
     dragDeltaX = x - dragStartX;
-    track.style.transform = `translateX(-${current * getSlideStep() - dragDeltaX}px)`;
+    track.style.transform = `translateX(-${dragStartOffset - dragDeltaX}px)`;
   }
   function onDragEnd() {
     if (!isDragging) return;
     isDragging = false;
     track.style.transition = '';
-    if (Math.abs(dragDeltaX) > (isMobileCarousel() ? 30 : 80)) {
-      goToSlide(dragDeltaX < 0 ? current + 1 : current - 1);
-    } else {
-      goToSlide(current);
-    }
+    const visibleSlides = getVisibleSlides();
+    const step = getSlideStep();
+    const maxOffset = Math.max(0, (visibleSlides.length - 1) * step);
+    const finalOffset = Math.max(0, Math.min(dragStartOffset - dragDeltaX, maxOffset));
+    track.style.transform = `translateX(-${finalOffset}px)`;
+    current = Math.max(0, Math.min(Math.round(finalOffset / step), visibleSlides.length - 1));
+    updateSlider();
+    updateArrows();
   }
 
-  carouselViewport.addEventListener('touchstart', e => { onDragStart(e.touches[0].clientX); }, { passive: true });
-  carouselViewport.addEventListener('touchmove',  e => { onDragMove(e.touches[0].clientX); },  { passive: true });
+  carouselViewport.addEventListener('touchstart', e => { onDragStart(e.touches[0].clientX, e.touches[0].clientY, true); }, { passive: true });
+  carouselViewport.addEventListener('touchmove',  e => { onDragMove(e.touches[0].clientX, e.touches[0].clientY, e); }, { passive: false });
   carouselViewport.addEventListener('touchend',   () => { onDragEnd(); });
-  carouselViewport.addEventListener('mousedown',  e => { onDragStart(e.clientX); e.preventDefault(); });
-  window.addEventListener('mousemove', e => { if (isDragging) onDragMove(e.clientX); });
+  carouselViewport.addEventListener('touchcancel', () => { isDragging = false; });
+  carouselViewport.addEventListener('mousedown',  e => { onDragStart(e.clientX, 0, false); e.preventDefault(); });
+  window.addEventListener('mousemove', e => { if (isDragging) onDragMove(e.clientX, 0, null); });
   window.addEventListener('mouseup',   onDragEnd);
 
   carouselViewport.addEventListener('keydown', e => {
@@ -355,8 +375,12 @@ if (carouselViewport) {
 if (carouselViewport) {
   updateEventStates();
   updateCarouselVisibility();
+  let lastResizeWidth = window.innerWidth;
   window.addEventListener('resize', () => {
-    updateCarouselVisibility();
+    if (window.innerWidth !== lastResizeWidth) {
+      lastResizeWidth = window.innerWidth;
+      updateCarouselVisibility();
+    }
   }, { passive: true });
 
   // Check hourly if events have moved to past and re-filter

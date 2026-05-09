@@ -180,33 +180,47 @@ if (musicViewport) {
   musicSliderWrap.addEventListener('touchmove',  e => seekMusicFromEvent(e.touches[0]), { passive: true });
 
   /* Carousel swipe / drag */
-  let musicDragging = false, musicDragStartX = 0, musicDragDeltaX = 0;
+  let musicDragging = false, musicDragStartX = 0, musicDragStartY = 0, musicDragDeltaX = 0, musicDragStartOffset = 0, musicDragDir = null;
 
-  function onMusicDragStart(x) {
-    musicDragging = true; musicDragStartX = x; musicDragDeltaX = 0;
+  function onMusicDragStart(x, y, needsDir) {
+    musicDragging = true; musicDragStartX = x; musicDragStartY = y; musicDragDeltaX = 0;
+    musicDragDir = needsDir ? null : 'h';
+    const mobile = isMobileMusic();
+    musicDragStartOffset = musicCurrent * getMusicSlideStep() - (mobile && musicCurrent > 0 ? MOBILE_MUSIC_GAP + MOBILE_MUSIC_PEEK : 0);
     musicTrack.style.transition = 'none';
   }
-  function onMusicDragMove(x) {
+  function onMusicDragMove(x, y, e) {
     if (!musicDragging) return;
+    if (musicDragDir === null) {
+      const ax = Math.abs(x - musicDragStartX), ay = Math.abs(y - musicDragStartY);
+      if (ax < 4 && ay < 4) return;
+      musicDragDir = ax >= ay ? 'h' : 'v';
+    }
+    if (musicDragDir === 'v') { musicDragging = false; musicTrack.style.transition = ''; return; }
+    if (e && e.cancelable) e.preventDefault();
     musicDragDeltaX = x - musicDragStartX;
-    musicTrack.style.transform = `translateX(-${musicCurrent * getMusicSlideStep() - musicDragDeltaX}px)`;
+    musicTrack.style.transform = `translateX(-${musicDragStartOffset - musicDragDeltaX}px)`;
   }
   function onMusicDragEnd() {
     if (!musicDragging) return;
     musicDragging = false;
     musicTrack.style.transition = '';
-    if (Math.abs(musicDragDeltaX) > (isMobileMusic() ? 30 : 80)) {
-      goToMusicSlide(musicDragDeltaX < 0 ? musicCurrent + 1 : musicCurrent - 1);
-    } else {
-      goToMusicSlide(musicCurrent);
-    }
+    const slides = getMusicSlides();
+    const step = getMusicSlideStep();
+    const maxOffset = Math.max(0, (slides.length - 1) * step);
+    const finalOffset = Math.max(0, Math.min(musicDragStartOffset - musicDragDeltaX, maxOffset));
+    musicTrack.style.transform = `translateX(-${finalOffset}px)`;
+    musicCurrent = Math.max(0, Math.min(Math.round(finalOffset / step), slides.length - 1));
+    updateMusicSlider();
+    updateMusicArrows();
   }
 
-  musicViewport.addEventListener('touchstart', e => { onMusicDragStart(e.touches[0].clientX); }, { passive: true });
-  musicViewport.addEventListener('touchmove',  e => { onMusicDragMove(e.touches[0].clientX); },  { passive: true });
+  musicViewport.addEventListener('touchstart', e => { onMusicDragStart(e.touches[0].clientX, e.touches[0].clientY, true); }, { passive: true });
+  musicViewport.addEventListener('touchmove',  e => { onMusicDragMove(e.touches[0].clientX, e.touches[0].clientY, e); }, { passive: false });
   musicViewport.addEventListener('touchend',   () => { onMusicDragEnd(); });
-  musicViewport.addEventListener('mousedown',  e => { onMusicDragStart(e.clientX); e.preventDefault(); });
-  window.addEventListener('mousemove', e => { if (musicDragging) onMusicDragMove(e.clientX); });
+  musicViewport.addEventListener('touchcancel', () => { musicDragging = false; });
+  musicViewport.addEventListener('mousedown',  e => { onMusicDragStart(e.clientX, 0, false); e.preventDefault(); });
+  window.addEventListener('mousemove', e => { if (musicDragging) onMusicDragMove(e.clientX, 0, null); });
   window.addEventListener('mouseup',   onMusicDragEnd);
 
   musicViewport.addEventListener('keydown', e => {
