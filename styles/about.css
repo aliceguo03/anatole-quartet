@@ -272,10 +272,10 @@
   .music-card__img { height: 90px; }
   .music-card__composer { margin-bottom: 4px; }
   .music-card__piece { margin-bottom: 10px; }
-  .music-card__quote {
+  .music-card__body .music-card__quote {
     font-family: var(--font-body);
     font-style: italic;
-    font-size: var(--text-caption-m);
+    font-size: 13px;
     line-height: 1.5;
     margin-bottom: 8px;
   }
