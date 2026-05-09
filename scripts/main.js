@@ -94,35 +94,6 @@ if (heroSection && !window.matchMedia('(hover: none)').matches) {
   test.src = 'assets/images/mobilehero.JPG';
 })();
 
-/* ─── Mobile nav overlay ─────────────────────────────────────── */
-(function () {
-  var hamburger = document.getElementById('navHamburger');
-  var overlay   = document.getElementById('navOverlay');
-  var closeBtn  = document.getElementById('navOverlayClose');
-  if (!hamburger || !overlay) return;
-
-  function openOverlay() {
-    overlay.classList.add('open');
-    overlay.setAttribute('aria-hidden', 'false');
-    hamburger.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeOverlay() {
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden', 'true');
-    hamburger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
-  hamburger.addEventListener('click', openOverlay);
-  closeBtn.addEventListener('click', closeOverlay);
-  overlay.querySelectorAll('.nav-overlay__link').forEach(function (link) {
-    link.addEventListener('click', closeOverlay);
-  });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeOverlay();
-  });
-})();
 
 /* ─── Scroll-triggered reveals ──────────────────────────────── */
 const triggeredGroups = new WeakSet();

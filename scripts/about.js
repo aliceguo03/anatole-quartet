@@ -99,8 +99,12 @@ const musicTrack      = document.getElementById('musicTrack');
 const musicSlides     = document.querySelectorAll('#musicTrack .carousel__slide');
 const musicSliderWrap = document.getElementById('musicSliderWrap');
 const musicSliderFill = document.getElementById('musicSliderFill');
-const MUSIC_GAP       = 24;
-let musicCurrent      = 0;
+const MUSIC_GAP         = 24;
+const MOBILE_MUSIC_GAP  = 16;
+const MOBILE_MUSIC_PEEK = 20;
+let musicCurrent        = 0;
+
+function isMobileMusic() { return window.innerWidth <= 768; }
 
 function getMusicSlides() {
   return Array.from(musicSlides);
@@ -108,7 +112,7 @@ function getMusicSlides() {
 
 function getMusicSlideStep() {
   const s = getMusicSlides()[0];
-  return s ? s.getBoundingClientRect().width + MUSIC_GAP : 0;
+  return s ? s.getBoundingClientRect().width + (isMobileMusic() ? MOBILE_MUSIC_GAP : MUSIC_GAP) : 0;
 }
 
 function updateMusicSlider() {
@@ -118,8 +122,11 @@ function updateMusicSlider() {
 function goToMusicSlide(index, animate = true) {
   const slides = getMusicSlides();
   musicCurrent = Math.max(0, Math.min(index, slides.length - 1));
+  const step   = getMusicSlideStep();
+  const mobile = isMobileMusic();
+  const offset = musicCurrent * step - (mobile && musicCurrent > 0 ? MOBILE_MUSIC_GAP + MOBILE_MUSIC_PEEK : 0);
   if (!animate) musicTrack.style.transition = 'none';
-  musicTrack.style.transform = `translateX(-${musicCurrent * getMusicSlideStep()}px)`;
+  musicTrack.style.transform = `translateX(-${offset}px)`;
   if (!animate) {
     musicTrack.getBoundingClientRect();
     musicTrack.style.transition = '';
@@ -134,7 +141,10 @@ function goToMusicSlide(index, animate = true) {
 
 function setMusicSlideWidths() {
   const vpWidth    = musicViewport.offsetWidth;
-  const slideWidth = (vpWidth - MUSIC_GAP) / 1.6;
+  const mobile     = isMobileMusic();
+  const slideWidth = mobile
+    ? Math.round(vpWidth * 0.80)
+    : (vpWidth - MUSIC_GAP) / 1.6;
   getMusicSlides().forEach(s => { s.style.flexBasis = `${slideWidth}px`; });
   goToMusicSlide(musicCurrent, false);
 }
@@ -173,7 +183,7 @@ if (musicViewport) {
     if (!musicDragging) return;
     musicDragging = false;
     musicTrack.style.transition = '';
-    if (Math.abs(musicDragDeltaX) > 80) {
+    if (Math.abs(musicDragDeltaX) > (isMobileMusic() ? 30 : 80)) {
       goToMusicSlide(musicDragDeltaX < 0 ? musicCurrent + 1 : musicCurrent - 1);
     } else {
       goToMusicSlide(musicCurrent);
@@ -279,4 +289,13 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       trigger.closest('.team__member').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 80);
   });
+})();
+
+/* ─── Mobile about hero image: handle .JPG / .jpg capitalisation ── */
+(function () {
+  var src = document.getElementById('mobileAboutSource');
+  if (!src || window.innerWidth > 768) return;
+  var test = new Image();
+  test.onerror = function () { src.srcset = 'assets/images/mobileabout.jpg'; };
+  test.src = 'assets/images/mobileabout.JPG';
 })();

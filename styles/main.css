@@ -697,49 +697,59 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   flex-shrink: 0;
 }
 .nav.scrolled .nav__hamburger { color: var(--color-body-text); }
+.nav__hamburger svg {
+  transition: transform 300ms ease;
+}
+.nav__hamburger.is-open svg {
+  transform: rotate(90deg);
+}
 
 .nav-overlay {
   position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: #141210;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: var(--color-vermillion);
+  transform: translateY(-100%);
+  padding: 88px 32px 40px;
   pointer-events: none;
-  transition: opacity 300ms ease;
+  transition: transform 320ms cubic-bezier(0.76, 0, 0.24, 1);
 }
 .nav-overlay.open {
-  opacity: 1;
+  transform: translateY(0);
   pointer-events: all;
 }
-.nav-overlay__close {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  color: var(--color-muted-text);
-  padding: 8px;
-  transition: color 200ms ease;
-}
-.nav-overlay__close:hover { color: var(--color-surface); }
 .nav-overlay nav {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 36px;
+  align-items: flex-start;
+  gap: 24px;
 }
 .nav-overlay__link {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 10vw, 52px);
-  font-weight: 400;
-  color: var(--color-muted-text);
-  letter-spacing: 0.02em;
+  font-family: var(--font-body);
+  font-size: var(--text-body-s);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  padding-bottom: 4px;
   transition: color 200ms ease;
 }
-.nav-overlay__link:hover,
-.nav-overlay__link--active { color: var(--color-surface); }
+.nav-overlay__link:hover { color: #fff; }
+.nav-overlay__link--active {
+  color: #fff;
+}
+.nav-overlay__link--active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background: var(--color-candlelight);
+}
 
 /* ─── Disable Ken Burns + parallax on touch devices ────────── */
 @media (hover: none) {
@@ -833,7 +843,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
   .footer__nav { flex-direction: column; align-items: flex-end; gap: 14px; }
   .footer__nav-link { font-size: var(--text-eyebrow); letter-spacing: 0.1em; }
-  .footer__ghost { font-size: clamp(80px, 22vw, 160px); }
+  .footer__ghost { font-size: clamp(80px, 22vw, 160px); text-align: center; }
+  .intro-overlay__inner {
+    top: min(52%, calc(100% - 280px));
+    padding: 0 24px;
+  }
 }
 
 @media (max-width: 480px) {

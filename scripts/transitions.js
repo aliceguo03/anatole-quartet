@@ -32,3 +32,34 @@
     });
   });
 })();
+
+/* ─── Mobile nav overlay toggle ─────────────────────────────── */
+(function () {
+  var hamburger = document.getElementById('navHamburger');
+  var overlay   = document.getElementById('navOverlay');
+  if (!hamburger || !overlay) return;
+
+  function openOverlay() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    hamburger.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    hamburger.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  hamburger.addEventListener('click', function () {
+    if (overlay.classList.contains('open')) closeOverlay();
+    else openOverlay();
+  });
+  overlay.querySelectorAll('.nav-overlay__link').forEach(function (link) {
+    link.addEventListener('click', closeOverlay);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeOverlay();
+  });
+})();

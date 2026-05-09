@@ -17,15 +17,23 @@
   justify-content: flex-end;
 }
 
-.about-hero__img {
+.about-hero__picture {
   position: absolute;
   inset: 0;
+  display: block;
+}
+
+.about-hero__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
   filter: saturate(0);
   display: block;
+}
+
+@media (hover: none) {
+  .about-hero__img { transform: none !important; }
 }
 
 .about-hero__overlay {
@@ -256,10 +264,19 @@
 
 /* ─── Music section responsive ──────────────────────────────── */
 @media (max-width: 768px) {
-  .music { padding: 80px 0 64px; }
-  .music__header { padding: 0 24px; margin-bottom: 48px; }
-  .music-card__body { padding: 28px 28px 32px; }
+  .music { padding: 64px 0 48px; }
+  .music__header { padding: 0 24px; margin-bottom: 40px; }
+  .music__title { font-size: 30px; }
+  .music__subtitle { font-size: var(--text-caption-l); }
+  .music-card__body { padding: 24px 24px 28px; }
   .music-card__img { height: 130px; }
+  .music-card__btn {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #musicSliderWrap { display: none; }
 }
 @media (max-width: 480px) {
   .music-card__composer { font-size: 26px; }
@@ -542,26 +559,104 @@
 
 /* ─── Team responsive ────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .team { padding: 80px 0 64px; }
-  .team__header { padding: 0 24px; margin-bottom: 48px; }
-  .team__accordion-wrap { padding: 0 24px; }
-  .team__trigger { padding: 20px 24px; }
-  .team__body-inner {
-    flex-direction: column-reverse;
-    gap: 32px;
-    padding: 10px 24px 32px;
+  .team { padding: 64px 0 48px; }
+  .team__header { padding: 0 24px; margin-bottom: 40px; }
+  .team__title { font-size: 30px; }
+  .team__subtitle { font-size: var(--text-caption-l); }
+
+  /* Edge-to-edge accordion */
+  .team__accordion-wrap { padding: 0; }
+  .team__accordion { border-radius: 0; border-left: none; border-right: none; }
+
+  /* Trigger row */
+  .team__trigger {
+    padding: 18px 20px;
+    min-height: 60px;
+    align-items: center;
   }
-  .team__photo-wrap { width: 100%; }
-  .team__photo {
-    max-width: 100%;
+  .team__trigger-left {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+  .team__name {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .team__dot { font-size: 22px; }
+  .team__instrument { font-size: 22px; }
+
+  /* Arrow only — hide EXPAND/COLLAPSE text */
+  .team__expand-text { display: none; }
+  .team__arrow { width: 22px; height: 22px; }
+
+  /* Drawer body: photo top → bio → facts */
+  .team__body-inner {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 20px 36px;
+  }
+
+  /* Circular photo centered at top */
+  .team__photo-col {
+    order: -1;
+    align-items: center;
+    justify-content: center;
     width: 100%;
+  }
+  .team__photo-wrap {
+    position: static;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    flex-shrink: unset;
+    margin: 0 auto;
+  }
+  .team__photo {
+    width: 108px;
+    height: 108px;
+    max-width: none;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 50%;
+    transition: none;
+    display: block;
+    flex-shrink: 0;
+  }
+  .team__photo-wrap:hover .team__photo { transform: none; }
+  .team__photo-overlay { display: none; }
+  .team__photo-socials {
+    position: static;
+    opacity: 1;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  .team__photo-wrap:hover .team__photo-socials { opacity: 1; }
+
+  /* Bio text */
+  .team__bio p { font-size: var(--text-caption-l); }
+
+  /* Facts */
+  .team__facts {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .team__fact-label { margin-top: 10px; }
+  .team__fact-label:first-child { margin-top: 0; }
+  .team__fact-value { font-size: var(--text-caption-l); }
+
+  /* Scrollable open drawer */
+  .team__member--open .team__body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
 @media (max-width: 480px) {
-  .team__accordion-wrap { padding: 0 16px; }
-  .team__name,
-  .team__instrument { font-size: 22px; }
-  .team__dot { font-size: 22px; }
-  .team__trigger-left { gap: 10px; }
+  .team__trigger { padding: 16px 16px; }
+  .team__body-inner { padding: 20px 16px 32px; }
 }

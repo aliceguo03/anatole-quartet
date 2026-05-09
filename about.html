@@ -15,6 +15,16 @@
 </head>
 <body>
 
+  <!-- Mobile nav overlay -->
+  <div class="nav-overlay" id="navOverlay" aria-hidden="true" role="dialog" aria-label="Navigation menu">
+    <nav aria-label="Mobile navigation">
+      <a href="index.html" class="nav-overlay__link">Home</a>
+      <a href="about.html" class="nav-overlay__link nav-overlay__link--active">About</a>
+      <a href="gallery.html" class="nav-overlay__link">Gallery</a>
+      <a href="#footer" class="nav-overlay__link">Contact</a>
+    </nav>
+  </div>
+
   <!-- Navigation -->
   <nav class="nav" id="nav" aria-label="Primary navigation">
     <a href="index.html" class="nav__logo-link" aria-label="Anatole Quartet home">
@@ -26,18 +36,28 @@
       <a href="gallery.html" class="nav__link">Gallery</a>
       <a href="#footer" class="nav__link">Contact <span class="nav__arrow">↓</span></a>
     </div>
+    <button class="nav__hamburger" id="navHamburger" aria-label="Open navigation menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
   </nav>
 
   <!-- About Hero: scroll-locked progressive text reveal -->
   <section class="about-hero-wrap" id="aboutHeroWrap" aria-label="About the Anatole Quartet">
     <div class="about-hero" id="aboutHero">
 
-      <img
-        src="assets/images/abouthero.jpg"
-        alt="The Anatole Quartet"
-        class="about-hero__img"
-        draggable="false"
-      >
+      <picture class="about-hero__picture">
+        <source media="(max-width: 768px)" srcset="assets/images/mobileabout.JPG" id="mobileAboutSource">
+        <img
+          src="assets/images/abouthero.jpg"
+          alt="The Anatole Quartet"
+          class="about-hero__img"
+          draggable="false"
+        >
+      </picture>
       <div class="about-hero__overlay" aria-hidden="true"></div>
 
       <div class="about-hero__content" id="aboutHeroContent">
@@ -103,7 +123,7 @@
                 <div class="music-card__body">
                   <p class="music-card__composer">Pyotr Ilyich Tchaikovsky</p>
                   <p class="music-card__piece">String Quartet No. 1 in D Major, IV. Finale</p>
-                  <blockquote class="music-card__quote">&#8220;In a bright D major finale to his first string quartet, Tchaikovsky delivers an exhilarating end to a pastorale and elegant work.&#8221;</blockquote>
+                  <blockquote class="music-card__quote">&#8220;The feeling of freedom and reaching &#8220;flow state&#8221; while speeding down a powdery slope&#8221;</blockquote>
                   <p class="music-card__attr">&#8212; JACOB KANG, CELLO</p>
                   <a href="https://youtu.be/1w7w6J5ODqc?si=V5VLaLBbX_txiZ5u" class="event-card__btn music-card__btn" target="_blank" rel="noopener">LISTEN WITH US &#8594;</a>
                 </div>
