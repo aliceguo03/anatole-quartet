@@ -268,13 +268,18 @@
   .music__header { padding: 0 24px; margin-bottom: 40px; }
   .music__title { font-size: 30px; }
   .music__subtitle { font-size: var(--text-caption-l); }
-  .music-card__body { padding: 24px 24px 28px; }
-  .music-card__img { height: 130px; }
+  .music-card__body { padding: 14px 18px 18px; }
+  .music-card__img { height: 90px; }
+  .music-card__composer { margin-bottom: 4px; }
+  .music-card__piece { margin-bottom: 10px; }
   .music-card__quote {
     font-family: var(--font-body);
     font-style: italic;
-    font-size: var(--text-caption-l);
+    font-size: var(--text-caption-m);
+    line-height: 1.5;
+    margin-bottom: 8px;
   }
+  .music-card__attr { margin-bottom: 14px; }
   .music-card__btn {
     min-height: 44px;
     display: flex;
@@ -564,7 +569,7 @@
 /* ─── Team responsive ────────────────────────────────────────── */
 @media (max-width: 768px) {
   .team { padding: 64px 0 0; }
-  .team__header { padding: 0 24px; margin-bottom: 40px; }
+  .team__header { padding: 0 24px; margin-bottom: 20px; }
   .team__title { font-size: 30px; }
   .team__subtitle { font-size: var(--text-caption-l); }
   .team__accordion-wrap { display: none; }

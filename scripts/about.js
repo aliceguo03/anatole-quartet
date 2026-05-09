@@ -99,6 +99,8 @@ const musicTrack      = document.getElementById('musicTrack');
 const musicSlides     = document.querySelectorAll('#musicTrack .carousel__slide');
 const musicSliderWrap = document.getElementById('musicSliderWrap');
 const musicSliderFill = document.getElementById('musicSliderFill');
+const musicPrevBtn    = document.getElementById('musicPrev');
+const musicNextBtn    = document.getElementById('musicNext');
 const MUSIC_GAP         = 24;
 const MOBILE_MUSIC_GAP  = 16;
 const MOBILE_MUSIC_PEEK = 20;
@@ -119,6 +121,12 @@ function updateMusicSlider() {
   musicSliderFill.style.transform = `translateX(${musicCurrent * 100}%)`;
 }
 
+function updateMusicArrows() {
+  if (!musicPrevBtn || !musicNextBtn) return;
+  musicPrevBtn.disabled = musicCurrent <= 0;
+  musicNextBtn.disabled = musicCurrent >= musicSlides.length - 1;
+}
+
 function goToMusicSlide(index, animate = true) {
   const slides = getMusicSlides();
   musicCurrent = Math.max(0, Math.min(index, slides.length - 1));
@@ -133,6 +141,7 @@ function goToMusicSlide(index, animate = true) {
   }
   if (!animate) musicSliderFill.style.transition = 'none';
   updateMusicSlider();
+  updateMusicArrows();
   if (!animate) {
     musicSliderFill.getBoundingClientRect();
     musicSliderFill.style.transition = '';
@@ -148,6 +157,9 @@ function setMusicSlideWidths() {
   getMusicSlides().forEach(s => { s.style.flexBasis = `${slideWidth}px`; });
   goToMusicSlide(musicCurrent, false);
 }
+
+if (musicPrevBtn) musicPrevBtn.addEventListener('click', () => goToMusicSlide(musicCurrent - 1));
+if (musicNextBtn) musicNextBtn.addEventListener('click', () => goToMusicSlide(musicCurrent + 1));
 
 if (musicViewport) {
   /* Slider: click or drag to seek */
@@ -190,9 +202,9 @@ if (musicViewport) {
     }
   }
 
-  musicViewport.addEventListener('touchstart', e => onMusicDragStart(e.touches[0].clientX), { passive: true });
-  musicViewport.addEventListener('touchmove',  e => onMusicDragMove(e.touches[0].clientX),  { passive: true });
-  musicViewport.addEventListener('touchend',   onMusicDragEnd);
+  musicViewport.addEventListener('touchstart', e => { if (isMobileMusic()) return; onMusicDragStart(e.touches[0].clientX); }, { passive: true });
+  musicViewport.addEventListener('touchmove',  e => { if (isMobileMusic()) return; onMusicDragMove(e.touches[0].clientX); },  { passive: true });
+  musicViewport.addEventListener('touchend',   e => { if (isMobileMusic()) return; onMusicDragEnd(); });
   musicViewport.addEventListener('mousedown',  e => { onMusicDragStart(e.clientX); e.preventDefault(); });
   window.addEventListener('mousemove', e => { if (musicDragging) onMusicDragMove(e.clientX); });
   window.addEventListener('mouseup',   onMusicDragEnd);

@@ -123,6 +123,8 @@ const track             = document.getElementById('carouselTrack');
 const slides            = document.querySelectorAll('.carousel__slide');
 const sliderWrap        = document.getElementById('carouselSliderWrap');
 const sliderFill        = document.getElementById('carouselSliderFill');
+const prevBtn           = document.getElementById('carouselPrev');
+const nextBtn           = document.getElementById('carouselNext');
 const filterBtns        = document.querySelectorAll('.carousel__filter-btn');
 const emptyStateEl      = document.getElementById('carouselEmptyState');
 const emptyMsgEl        = document.getElementById('carouselEmptyMsg');
@@ -228,6 +230,13 @@ function updateSlider() {
   sliderFill.style.transform = `translateX(${current * 100}%)`;
 }
 
+function updateArrows() {
+  if (!prevBtn || !nextBtn) return;
+  const visibleSlides = getVisibleSlides();
+  prevBtn.disabled = current <= 0;
+  nextBtn.disabled = current >= visibleSlides.length - 1;
+}
+
 function goToSlide(index, animate = true) {
   const visibleSlides = getVisibleSlides();
   current = Math.max(0, Math.min(index, visibleSlides.length - 1));
@@ -243,6 +252,7 @@ function goToSlide(index, animate = true) {
   }
   if (!animate) sliderFill.style.transition = 'none';
   updateSlider();
+  updateArrows();
   if (!animate) {
     sliderFill.getBoundingClientRect();
     sliderFill.style.transition = '';
@@ -262,6 +272,9 @@ filterBtns.forEach(btn => {
     updateCarouselVisibility();
   });
 });
+
+if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(current - 1));
+if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(current + 1));
 
 if (carouselViewport) {
   /* Slider: click or drag to seek */
@@ -305,9 +318,9 @@ if (carouselViewport) {
     }
   }
 
-  carouselViewport.addEventListener('touchstart', e => onDragStart(e.touches[0].clientX), { passive: true });
-  carouselViewport.addEventListener('touchmove',  e => onDragMove(e.touches[0].clientX),  { passive: true });
-  carouselViewport.addEventListener('touchend',   onDragEnd);
+  carouselViewport.addEventListener('touchstart', e => { if (isMobileCarousel()) return; onDragStart(e.touches[0].clientX); }, { passive: true });
+  carouselViewport.addEventListener('touchmove',  e => { if (isMobileCarousel()) return; onDragMove(e.touches[0].clientX); },  { passive: true });
+  carouselViewport.addEventListener('touchend',   e => { if (isMobileCarousel()) return; onDragEnd(); });
   carouselViewport.addEventListener('mousedown',  e => { onDragStart(e.clientX); e.preventDefault(); });
   window.addEventListener('mousemove', e => { if (isDragging) onDragMove(e.clientX); });
   window.addEventListener('mouseup',   onDragEnd);
