@@ -601,8 +601,8 @@
 
   .team__mobile-name-row {
     display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
+    align-items: flex-start;
+    flex-wrap: nowrap;
     gap: 10px;
     margin-bottom: 20px;
   }
@@ -611,18 +611,23 @@
     font-size: 28px;
     font-weight: 400;
     color: var(--color-body-text);
+    flex: 1;
+    min-width: 0;
   }
   .team__mobile-dot {
     font-family: var(--font-display);
     font-size: 28px;
     color: var(--color-vermillion);
     line-height: 1;
+    flex-shrink: 0;
   }
   .team__mobile-instrument {
     font-family: var(--font-display);
     font-style: italic;
     font-size: 28px;
     color: var(--color-terracotta);
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .team__mobile-bio p {

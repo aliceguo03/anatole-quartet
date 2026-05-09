@@ -46,12 +46,15 @@
 
   <!-- Gallery Hero -->
   <section class="gallery-hero" id="galleryHero" aria-label="Gallery hero">
-    <img
-      src="assets/images/galleryhero.JPG"
-      alt="The Anatole Quartet"
-      class="gallery-hero__image"
-      draggable="false"
-    >
+    <picture class="gallery-hero__picture">
+      <source media="(max-width: 768px)" srcset="assets/images/mobilegallery.jpg">
+      <img
+        src="assets/images/galleryhero.JPG"
+        alt="The Anatole Quartet"
+        class="gallery-hero__image"
+        draggable="false"
+      >
+    </picture>
     <div class="gallery-hero__overlay" aria-hidden="true"></div>
     <div class="gallery-hero__scroll-indicator" id="scrollIndicator" aria-hidden="true">
       <span class="gallery-hero__scroll-text">Scroll down to see more</span>
