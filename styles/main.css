@@ -347,7 +347,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .event-card {
   background: var(--color-surface);
   border-radius: 8px;
-  padding: 40px 36px;
+  padding: 24px 20px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -372,7 +372,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .event-card__day {
   font-family: var(--font-display);
-  font-size: 80px;
+  font-size: 56px;
   font-weight: 700;
   color: var(--color-vermillion);
   line-height: 1;
@@ -397,7 +397,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .event-card__time {
   font-family: var(--font-display);
-  font-size: clamp(36px, 4vw, 64px);
+  font-size: clamp(26px, 6vw, 42px);
   font-weight: 400;
   color: var(--color-muted-text);
   line-height: 1;
@@ -406,7 +406,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .event-card__title {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 400;
   color: var(--color-body-text);
   margin-bottom: 14px;
@@ -414,13 +414,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .event-card__desc {
   font-family: var(--font-body);
-  font-size: var(--text-body-s);
+  font-size: var(--text-caption-l);
   font-weight: 300;
   color: var(--color-secondary-light);
   letter-spacing: 0.03em;
   line-height: 1.65;
   flex: 1;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .event-card__btn {
   align-self: flex-start;
@@ -764,6 +764,15 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 }
 
+/* ─── Desktop overrides for mobile-first card properties ───── */
+@media (min-width: 769px) {
+  .event-card { padding: 40px 36px; }
+  .event-card__day { font-size: 80px; }
+  .event-card__time { font-size: clamp(36px, 4vw, 64px); }
+  .event-card__title { font-size: 22px; }
+  .event-card__desc { font-size: var(--text-body-s); margin-bottom: 28px; }
+}
+
 /* ─── Responsive (768px) ────────────────────────────────────── */
 @media (max-width: 768px) {
   /* Nav */
@@ -774,8 +783,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .nav__logo-img { height: 36px; }
 
   /* Hero */
-  .hero__content { padding: 0 24px; top: min(52%, calc(100% - 280px)); }
-  .hero__tagline { font-size: 16px; margin-top: 12px; }
+  .hero__content { top: 0; bottom: 0; padding: 0 24px 64px; }
+  .hero__title { margin-top: min(52vh, calc(100vh - 280px)); }
+  .hero__tagline { font-size: 16px; margin-top: auto; }
   .hero__image { height: 100%; object-position: center center; }
   .hero__cta {
     margin-top: 20px;
@@ -826,11 +836,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 
   /* Event cards */
-  .event-card { padding: 24px 20px; }
-  .event-card__day { font-size: 56px; }
-  .event-card__time { font-size: clamp(26px, 6vw, 42px); }
-  .event-card__title { font-size: 16px; }
-  .event-card__desc { font-size: var(--text-caption-l); margin-bottom: 20px; }
   .event-card__btn {
     min-height: 44px;
     display: inline-flex;
