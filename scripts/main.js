@@ -274,8 +274,13 @@ filterBtns.forEach(btn => {
     });
     btn.classList.add('carousel__filter-btn--active');
     btn.setAttribute('aria-pressed', 'true');
+    const trackEl = document.getElementById('carouselTrack');
+    if (trackEl) trackEl.style.visibility = 'hidden';
     currentFilter = btn.dataset.filter;
     updateCarouselVisibility();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (trackEl) trackEl.style.visibility = 'visible';
+    }));
   });
 });
 

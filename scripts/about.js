@@ -328,11 +328,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 })();
 
-/* ─── Mobile about hero image: handle .JPG / .jpg capitalisation ── */
+/* ─── Mobile about hero image ────────────────────────────────── */
 (function () {
   var src = document.getElementById('mobileAboutSource');
   if (!src || window.innerWidth > 768) return;
-  var test = new Image();
-  test.onerror = function () { src.srcset = 'assets/images/mobileabout.jpg'; };
-  test.src = 'assets/images/mobileabout.JPG';
+  src.srcset = 'assets/images/mobileabout.png';
 })();

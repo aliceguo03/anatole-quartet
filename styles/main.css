@@ -795,7 +795,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .nav__logo-img { height: 36px; }
 
   /* Hero */
-  .hero__content { top: 0; bottom: 0; padding: 0 24px 100px; }
+  .hero__content { top: 0; bottom: 0; padding: 0 24px 110px; }
   .hero__title { margin-top: min(52vh, calc(100vh - 280px)); }
   .hero__tagline { font-size: 16px; margin-top: auto; }
   .hero__image { height: 100%; object-position: center center; }
@@ -1037,6 +1037,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 .gallery__item:hover .gallery__item-overlay { background: rgba(0,0,0,0.15); }
 
 @media (max-width: 768px) {
+  .gallery-hero__scroll-indicator { bottom: 110px; }
   .gallery__grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 40vw;
