@@ -372,7 +372,8 @@ if (carouselViewport) {
 }
 
 /* Init + resize */
-if (carouselViewport) {
+function initCarousel() {
+  if (!carouselViewport) return;
   updateEventStates();
   updateCarouselVisibility();
   let lastResizeWidth = window.innerWidth;
@@ -382,9 +383,17 @@ if (carouselViewport) {
       updateCarouselVisibility();
     }
   }, { passive: true });
-
-  // Check hourly if events have moved to past and re-filter
   setInterval(() => { updateEventStates(); updateCarouselVisibility(); }, 1000 * 60 * 60);
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    initCarousel();
+    const track = document.getElementById('carouselTrack');
+    if (track) track.style.visibility = 'visible';
+  });
+} else {
+  initCarousel();
 }
 
 /* ─── Smooth scroll for # links ─────────────────────────────── */

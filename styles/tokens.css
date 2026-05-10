@@ -36,8 +36,8 @@
   --color-deep-blue: #0A1828;
 
   /* Typography */
-  --font-display: 'Playfair Display', serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-display: 'Playfair Display', ui-serif, Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   --text-display-1: 120px;
   --text-display-2: 96px;

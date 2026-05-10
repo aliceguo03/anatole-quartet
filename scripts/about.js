@@ -161,7 +161,9 @@ function setMusicSlideWidths() {
 if (musicPrevBtn) musicPrevBtn.addEventListener('click', () => goToMusicSlide(musicCurrent - 1));
 if (musicNextBtn) musicNextBtn.addEventListener('click', () => goToMusicSlide(musicCurrent + 1));
 
-if (musicViewport) {
+function initMusicCarousel() {
+  if (!musicViewport) return;
+
   /* Slider: click or drag to seek */
   let musicSliderActive = false;
 
@@ -249,6 +251,15 @@ if (musicViewport) {
 
   setMusicSlideWidths();
   window.addEventListener('resize', setMusicSlideWidths, { passive: true });
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    initMusicCarousel();
+    if (musicTrack) musicTrack.style.visibility = 'visible';
+  });
+} else {
+  initMusicCarousel();
 }
 
 /* ─── Team accordion ─────────────────────────────────────────── */

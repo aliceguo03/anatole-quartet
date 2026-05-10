@@ -1,3 +1,14 @@
+/* ─── Font-display: avoid FOUT while fonts download ─────────── */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-display: optional;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-display: optional;
+}
+
 /* ─── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -39,6 +50,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 
 .mobile-br { display: none; }
+.carousel__track { visibility: hidden; }
 
 /* ─── Reveal on scroll ──────────────────────────────────────── */
 .reveal {
@@ -372,7 +384,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .event-card__day {
   font-family: var(--font-display);
-  font-size: 56px;
+  font-size: clamp(48px, 12vw, 72px);
   font-weight: 700;
   color: var(--color-vermillion);
   line-height: 1;
@@ -397,7 +409,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 }
 .event-card__time {
   font-family: var(--font-display);
-  font-size: clamp(26px, 6vw, 42px);
+  font-size: clamp(14px, 4vw, 20px);
   font-weight: 400;
   color: var(--color-muted-text);
   line-height: 1;
@@ -783,7 +795,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .nav__logo-img { height: 36px; }
 
   /* Hero */
-  .hero__content { top: 0; bottom: 0; padding: 0 24px 64px; }
+  .hero__content { top: 0; bottom: 0; padding: 0 24px 100px; }
   .hero__title { margin-top: min(52vh, calc(100vh - 280px)); }
   .hero__tagline { font-size: 16px; margin-top: auto; }
   .hero__image { height: 100%; object-position: center center; }
@@ -836,6 +848,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
 
   /* Event cards */
+  .event-card { min-height: 320px; }
   .event-card__btn {
     min-height: 44px;
     display: inline-flex;
@@ -885,7 +898,13 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   }
   .footer__nav { flex-direction: column; align-items: flex-end; gap: 14px; }
   .footer__nav-link { font-size: var(--text-eyebrow); letter-spacing: 0.1em; }
-  .footer__ghost { font-size: clamp(80px, 22vw, 160px); text-align: center; }
+  .footer__ghost {
+    font-size: clamp(80px, 22vw, 160px);
+    width: max-content;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   .intro-overlay__inner {
     top: min(52%, calc(100% - 280px));
     padding: 0 24px;
