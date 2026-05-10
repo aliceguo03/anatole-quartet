@@ -28,7 +28,6 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  filter: saturate(0);
   display: block;
 }
 
@@ -66,13 +65,13 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transform: translateY(10px);
+  filter: blur(4px);
   margin-top: 0;
   transition:
-    grid-template-rows 600ms ease,
-    margin-top         600ms ease,
-    opacity            800ms ease,
-    transform          800ms ease;
+    grid-template-rows 800ms ease,
+    margin-top         800ms ease,
+    opacity            1100ms ease,
+    filter             900ms ease;
   width: 100%;
 }
 
@@ -89,7 +88,7 @@
 .about-hero__stage.visible {
   grid-template-rows: 1fr;
   opacity: 1;
-  transform: translateY(0);
+  filter: blur(0);
 }
 
 /* Gap above stages 2 & 3 — only present once they are visible */

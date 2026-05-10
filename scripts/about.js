@@ -20,8 +20,8 @@ const wrapper = document.getElementById('aboutHeroWrap');
 
 const stages = [
   { el: document.getElementById('aboutStage1'), at: 0.00, done: false, doneAt: 0 },
-  { el: document.getElementById('aboutStage2'), at: 0.15, done: false, doneAt: 0 },
-  { el: document.getElementById('aboutStage3'), at: 0.30, done: false, doneAt: 0 },
+  { el: document.getElementById('aboutStage2'), at: 0.22, done: false, doneAt: 0 },
+  { el: document.getElementById('aboutStage3'), at: 0.48, done: false, doneAt: 0 },
 ];
 
 function heroProgress() {
@@ -34,7 +34,7 @@ function triggerStage(stage) {
   stage.done   = true;
   stage.doneAt = Date.now();
   stage.el.classList.add('visible');
-  setTimeout(updateHero, 460); // chain: check next stage after animation
+  setTimeout(updateHero, 610);
 }
 
 function updateHero() {
@@ -56,7 +56,7 @@ function updateHero() {
     if (p < stage.at) break;
     const prev = stages[i - 1];
     if (prev && !prev.done) break;
-    const wait = prev ? 450 - (Date.now() - prev.doneAt) : 0;
+    const wait = prev ? 600 - (Date.now() - prev.doneAt) : 0;
     if (wait <= 0) {
       triggerStage(stage);
     } else {
@@ -332,5 +332,5 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 (function () {
   var src = document.getElementById('mobileAboutSource');
   if (!src || window.innerWidth > 768) return;
-  src.srcset = 'assets/images/mobileabout.png';
+  src.srcset = 'assets/images/mobileabout.jpeg';
 })();
