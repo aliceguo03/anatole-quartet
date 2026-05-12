@@ -139,6 +139,7 @@ const MOBILE_GAP        = 16;
 const MOBILE_PEEK       = 20; // px of adjacent card visible on mobile
 let current             = 0;
 let currentFilter       = 'upcoming';
+let carouselSeek        = null;
 
 function getToday() {
   const today = new Date();
@@ -246,23 +247,20 @@ function updateArrows() {
 function goToSlide(index, animate = true) {
   const visibleSlides = getVisibleSlides();
   current = Math.max(0, Math.min(index, visibleSlides.length - 1));
-  const step   = getSlideStep();
-  const mobile = isMobileCarousel();
-  // On mobile, shift back by (gap + peek) so the previous card peeks in on the left
-  const offset = current * step - (mobile && current > 0 ? MOBILE_GAP + MOBILE_PEEK : 0);
-  if (!animate) track.style.transition = 'none';
-  track.style.transform = `translateX(-${offset}px)`;
-  if (!animate) {
-    track.getBoundingClientRect();
-    track.style.transition = '';
+  const step        = getSlideStep();
+  const mobile      = isMobileCarousel();
+  const pixelOffset = current * step - (mobile && current > 0 ? MOBILE_GAP + MOBILE_PEEK : 0);
+  if (carouselSeek) {
+    carouselSeek(-pixelOffset, animate);
+  } else {
+    if (!animate) track.style.transition = 'none';
+    track.style.transform = `translateX(-${pixelOffset}px)`;
+    if (!animate) { track.getBoundingClientRect(); track.style.transition = ''; }
   }
   if (!animate) sliderFill.style.transition = 'none';
   updateSlider();
   updateArrows();
-  if (!animate) {
-    sliderFill.getBoundingClientRect();
-    sliderFill.style.transition = '';
-  }
+  if (!animate) { sliderFill.getBoundingClientRect(); sliderFill.style.transition = ''; }
 }
 
 // Filter button handlers
@@ -306,50 +304,6 @@ if (carouselViewport) {
   sliderWrap.addEventListener('touchstart', e => seekFromEvent(e.touches[0]), { passive: true });
   sliderWrap.addEventListener('touchmove',  e => seekFromEvent(e.touches[0]), { passive: true });
 
-  /* Carousel swipe / drag */
-  let isDragging = false, dragStartX = 0, dragStartY = 0, dragDeltaX = 0, dragStartOffset = 0, dragDirection = null;
-
-  function onDragStart(x, y, needsDir) {
-    isDragging = true; dragStartX = x; dragStartY = y; dragDeltaX = 0;
-    dragDirection = needsDir ? null : 'h';
-    const mobile = isMobileCarousel();
-    dragStartOffset = current * getSlideStep() - (mobile && current > 0 ? MOBILE_GAP + MOBILE_PEEK : 0);
-    track.style.transition = 'none';
-  }
-  function onDragMove(x, y, e) {
-    if (!isDragging) return;
-    if (dragDirection === null) {
-      const ax = Math.abs(x - dragStartX), ay = Math.abs(y - dragStartY);
-      if (ax < 4 && ay < 4) return;
-      dragDirection = ax >= ay ? 'h' : 'v';
-    }
-    if (dragDirection === 'v') { isDragging = false; track.style.transition = ''; return; }
-    if (e && e.cancelable) e.preventDefault();
-    dragDeltaX = x - dragStartX;
-    track.style.transform = `translateX(-${dragStartOffset - dragDeltaX}px)`;
-  }
-  function onDragEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    track.style.transition = '';
-    const visibleSlides = getVisibleSlides();
-    const step = getSlideStep();
-    const maxOffset = Math.max(0, (visibleSlides.length - 1) * step);
-    const finalOffset = Math.max(0, Math.min(dragStartOffset - dragDeltaX, maxOffset));
-    track.style.transform = `translateX(-${finalOffset}px)`;
-    current = Math.max(0, Math.min(Math.round(finalOffset / step), visibleSlides.length - 1));
-    updateSlider();
-    updateArrows();
-  }
-
-  carouselViewport.addEventListener('touchstart', e => { onDragStart(e.touches[0].clientX, e.touches[0].clientY, true); }, { passive: true });
-  carouselViewport.addEventListener('touchmove',  e => { onDragMove(e.touches[0].clientX, e.touches[0].clientY, e); }, { passive: false });
-  carouselViewport.addEventListener('touchend',   () => { onDragEnd(); });
-  carouselViewport.addEventListener('touchcancel', () => { isDragging = false; });
-  carouselViewport.addEventListener('mousedown',  e => { onDragStart(e.clientX, 0, false); e.preventDefault(); });
-  window.addEventListener('mousemove', e => { if (isDragging) onDragMove(e.clientX, 0, null); });
-  window.addEventListener('mouseup',   onDragEnd);
-
   carouselViewport.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  goToSlide(current - 1);
     if (e.key === 'ArrowRight') goToSlide(current + 1);
@@ -376,10 +330,111 @@ if (carouselViewport) {
   }, { passive: false });
 }
 
+/* ─── Free-scroll momentum carousel ────────────────────────────── */
+function initFreeScrollCarousel(trackEl, clipEl) {
+  let startX = 0, startY = 0, lastX = 0, lastT = 0;
+  let velocity = 0, offset = 0;
+  let isDragging = false, axisLocked = null, isTouch = false, rafId = null;
+
+  const minOffset = () => -(trackEl.scrollWidth - clipEl.offsetWidth);
+  const maxOffset = 0;
+
+  function setOffset(x, animate = false) {
+    offset = x;
+    trackEl.style.transition = animate
+      ? 'transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      : 'none';
+    trackEl.style.transform = `translateX(${offset}px)`;
+  }
+
+  function applyRubberBand(x) {
+    const min = minOffset();
+    if (x > maxOffset) return maxOffset + (x - maxOffset) * 0.18;
+    if (x < min)       return min       + (x - min)       * 0.18;
+    return x;
+  }
+
+  function clamp(x) { return Math.max(minOffset(), Math.min(maxOffset, x)); }
+
+  function momentum() {
+    if (Math.abs(velocity) < 0.01) {
+      const min = minOffset();
+      if (offset > maxOffset) setOffset(maxOffset, true);
+      else if (offset < min)  setOffset(min, true);
+      return;
+    }
+    velocity *= 0.94;
+    const next = offset + velocity * 16;
+    const min  = minOffset();
+    if (next > maxOffset || next < min) {
+      setOffset(clamp(next));
+      velocity = 0;
+      setTimeout(() => setOffset(clamp(offset), true), 0);
+      return;
+    }
+    setOffset(next);
+    rafId = requestAnimationFrame(momentum);
+  }
+
+  function dragStart(clientX, clientY, touch = false) {
+    cancelAnimationFrame(rafId);
+    startX = clientX; startY = clientY; lastX = clientX;
+    lastT = Date.now(); velocity = 0; isDragging = true;
+    isTouch = touch; axisLocked = touch ? null : 'x';
+    trackEl.style.transition = 'none';
+    if (!touch) trackEl.style.cursor = 'grabbing';
+  }
+
+  function dragMove(clientX, clientY) {
+    if (!isDragging) return;
+    if (axisLocked === null) {
+      const dx = Math.abs(clientX - startX), dy = Math.abs(clientY - startY);
+      if (dx > 8 || dy > 8) axisLocked = dx >= dy ? 'x' : 'y';
+    }
+    if (axisLocked === 'y') return;
+    const now = Date.now(), dt = now - lastT;
+    if (dt > 0) velocity = (clientX - lastX) / dt * 16;
+    lastX = clientX; lastT = now;
+    const next = offset + (clientX - startX);
+    startX = clientX;
+    setOffset(applyRubberBand(next));
+  }
+
+  function dragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!isTouch) { trackEl.style.cursor = 'grab'; document.body.style.userSelect = ''; }
+    if (axisLocked !== 'x') return;
+    rafId = requestAnimationFrame(momentum);
+  }
+
+  trackEl.addEventListener('touchstart', e => {
+    dragStart(e.touches[0].clientX, e.touches[0].clientY, true);
+  }, { passive: true });
+  trackEl.addEventListener('touchmove', e => {
+    if (axisLocked === 'x') e.preventDefault();
+    dragMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  trackEl.addEventListener('touchend', dragEnd);
+
+  trackEl.addEventListener('mousedown', e => {
+    e.preventDefault();
+    document.body.style.userSelect = 'none';
+    dragStart(e.clientX, e.clientY, false);
+  });
+  document.addEventListener('mousemove', e => { if (isDragging && !isTouch) dragMove(e.clientX, e.clientY); });
+  document.addEventListener('mouseup',   () => { if (isDragging && !isTouch) dragEnd(); });
+
+  trackEl.style.cursor = 'grab';
+  return { seekTo: (x, animate = false) => setOffset(x, animate) };
+}
+
 /* Init + resize */
 function initCarousel() {
   if (!carouselViewport) return;
   updateEventStates();
+  const { seekTo } = initFreeScrollCarousel(track, track.closest('.carousel__clip'));
+  carouselSeek = seekTo;
   updateCarouselVisibility();
   let lastResizeWidth = window.innerWidth;
   window.addEventListener('resize', () => {

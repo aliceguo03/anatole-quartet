@@ -105,6 +105,7 @@ const MUSIC_GAP         = 24;
 const MOBILE_MUSIC_GAP  = 16;
 const MOBILE_MUSIC_PEEK = 20;
 let musicCurrent        = 0;
+let musicSeek           = null;
 
 function isMobileMusic() { return window.innerWidth <= 768; }
 
@@ -130,22 +131,20 @@ function updateMusicArrows() {
 function goToMusicSlide(index, animate = true) {
   const slides = getMusicSlides();
   musicCurrent = Math.max(0, Math.min(index, slides.length - 1));
-  const step   = getMusicSlideStep();
-  const mobile = isMobileMusic();
-  const offset = musicCurrent * step - (mobile && musicCurrent > 0 ? MOBILE_MUSIC_GAP + MOBILE_MUSIC_PEEK : 0);
-  if (!animate) musicTrack.style.transition = 'none';
-  musicTrack.style.transform = `translateX(-${offset}px)`;
-  if (!animate) {
-    musicTrack.getBoundingClientRect();
-    musicTrack.style.transition = '';
+  const step        = getMusicSlideStep();
+  const mobile      = isMobileMusic();
+  const pixelOffset = musicCurrent * step - (mobile && musicCurrent > 0 ? MOBILE_MUSIC_GAP + MOBILE_MUSIC_PEEK : 0);
+  if (musicSeek) {
+    musicSeek(-pixelOffset, animate);
+  } else {
+    if (!animate) musicTrack.style.transition = 'none';
+    musicTrack.style.transform = `translateX(-${pixelOffset}px)`;
+    if (!animate) { musicTrack.getBoundingClientRect(); musicTrack.style.transition = ''; }
   }
   if (!animate) musicSliderFill.style.transition = 'none';
   updateMusicSlider();
   updateMusicArrows();
-  if (!animate) {
-    musicSliderFill.getBoundingClientRect();
-    musicSliderFill.style.transition = '';
-  }
+  if (!animate) { musicSliderFill.getBoundingClientRect(); musicSliderFill.style.transition = ''; }
 }
 
 function setMusicSlideWidths() {
@@ -160,6 +159,105 @@ function setMusicSlideWidths() {
 
 if (musicPrevBtn) musicPrevBtn.addEventListener('click', () => goToMusicSlide(musicCurrent - 1));
 if (musicNextBtn) musicNextBtn.addEventListener('click', () => goToMusicSlide(musicCurrent + 1));
+
+/* ─── Free-scroll momentum carousel ────────────────────────────── */
+function initFreeScrollCarousel(trackEl, clipEl) {
+  let startX = 0, startY = 0, lastX = 0, lastT = 0;
+  let velocity = 0, offset = 0;
+  let isDragging = false, axisLocked = null, isTouch = false, rafId = null;
+
+  const minOffset = () => -(trackEl.scrollWidth - clipEl.offsetWidth);
+  const maxOffset = 0;
+
+  function setOffset(x, animate = false) {
+    offset = x;
+    trackEl.style.transition = animate
+      ? 'transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+      : 'none';
+    trackEl.style.transform = `translateX(${offset}px)`;
+  }
+
+  function applyRubberBand(x) {
+    const min = minOffset();
+    if (x > maxOffset) return maxOffset + (x - maxOffset) * 0.18;
+    if (x < min)       return min       + (x - min)       * 0.18;
+    return x;
+  }
+
+  function clamp(x) { return Math.max(minOffset(), Math.min(maxOffset, x)); }
+
+  function momentum() {
+    if (Math.abs(velocity) < 0.01) {
+      const min = minOffset();
+      if (offset > maxOffset) setOffset(maxOffset, true);
+      else if (offset < min)  setOffset(min, true);
+      return;
+    }
+    velocity *= 0.94;
+    const next = offset + velocity * 16;
+    const min  = minOffset();
+    if (next > maxOffset || next < min) {
+      setOffset(clamp(next));
+      velocity = 0;
+      setTimeout(() => setOffset(clamp(offset), true), 0);
+      return;
+    }
+    setOffset(next);
+    rafId = requestAnimationFrame(momentum);
+  }
+
+  function dragStart(clientX, clientY, touch = false) {
+    cancelAnimationFrame(rafId);
+    startX = clientX; startY = clientY; lastX = clientX;
+    lastT = Date.now(); velocity = 0; isDragging = true;
+    isTouch = touch; axisLocked = touch ? null : 'x';
+    trackEl.style.transition = 'none';
+    if (!touch) trackEl.style.cursor = 'grabbing';
+  }
+
+  function dragMove(clientX, clientY) {
+    if (!isDragging) return;
+    if (axisLocked === null) {
+      const dx = Math.abs(clientX - startX), dy = Math.abs(clientY - startY);
+      if (dx > 8 || dy > 8) axisLocked = dx >= dy ? 'x' : 'y';
+    }
+    if (axisLocked === 'y') return;
+    const now = Date.now(), dt = now - lastT;
+    if (dt > 0) velocity = (clientX - lastX) / dt * 16;
+    lastX = clientX; lastT = now;
+    const next = offset + (clientX - startX);
+    startX = clientX;
+    setOffset(applyRubberBand(next));
+  }
+
+  function dragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    if (!isTouch) { trackEl.style.cursor = 'grab'; document.body.style.userSelect = ''; }
+    if (axisLocked !== 'x') return;
+    rafId = requestAnimationFrame(momentum);
+  }
+
+  trackEl.addEventListener('touchstart', e => {
+    dragStart(e.touches[0].clientX, e.touches[0].clientY, true);
+  }, { passive: true });
+  trackEl.addEventListener('touchmove', e => {
+    if (axisLocked === 'x') e.preventDefault();
+    dragMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  trackEl.addEventListener('touchend', dragEnd);
+
+  trackEl.addEventListener('mousedown', e => {
+    e.preventDefault();
+    document.body.style.userSelect = 'none';
+    dragStart(e.clientX, e.clientY, false);
+  });
+  document.addEventListener('mousemove', e => { if (isDragging && !isTouch) dragMove(e.clientX, e.clientY); });
+  document.addEventListener('mouseup',   () => { if (isDragging && !isTouch) dragEnd(); });
+
+  trackEl.style.cursor = 'grab';
+  return { seekTo: (x, animate = false) => setOffset(x, animate) };
+}
 
 function initMusicCarousel() {
   if (!musicViewport) return;
@@ -180,50 +278,6 @@ function initMusicCarousel() {
 
   musicSliderWrap.addEventListener('touchstart', e => seekMusicFromEvent(e.touches[0]), { passive: true });
   musicSliderWrap.addEventListener('touchmove',  e => seekMusicFromEvent(e.touches[0]), { passive: true });
-
-  /* Carousel swipe / drag */
-  let musicDragging = false, musicDragStartX = 0, musicDragStartY = 0, musicDragDeltaX = 0, musicDragStartOffset = 0, musicDragDir = null;
-
-  function onMusicDragStart(x, y, needsDir) {
-    musicDragging = true; musicDragStartX = x; musicDragStartY = y; musicDragDeltaX = 0;
-    musicDragDir = needsDir ? null : 'h';
-    const mobile = isMobileMusic();
-    musicDragStartOffset = musicCurrent * getMusicSlideStep() - (mobile && musicCurrent > 0 ? MOBILE_MUSIC_GAP + MOBILE_MUSIC_PEEK : 0);
-    musicTrack.style.transition = 'none';
-  }
-  function onMusicDragMove(x, y, e) {
-    if (!musicDragging) return;
-    if (musicDragDir === null) {
-      const ax = Math.abs(x - musicDragStartX), ay = Math.abs(y - musicDragStartY);
-      if (ax < 4 && ay < 4) return;
-      musicDragDir = ax >= ay ? 'h' : 'v';
-    }
-    if (musicDragDir === 'v') { musicDragging = false; musicTrack.style.transition = ''; return; }
-    if (e && e.cancelable) e.preventDefault();
-    musicDragDeltaX = x - musicDragStartX;
-    musicTrack.style.transform = `translateX(-${musicDragStartOffset - musicDragDeltaX}px)`;
-  }
-  function onMusicDragEnd() {
-    if (!musicDragging) return;
-    musicDragging = false;
-    musicTrack.style.transition = '';
-    const slides = getMusicSlides();
-    const step = getMusicSlideStep();
-    const maxOffset = Math.max(0, (slides.length - 1) * step);
-    const finalOffset = Math.max(0, Math.min(musicDragStartOffset - musicDragDeltaX, maxOffset));
-    musicTrack.style.transform = `translateX(-${finalOffset}px)`;
-    musicCurrent = Math.max(0, Math.min(Math.round(finalOffset / step), slides.length - 1));
-    updateMusicSlider();
-    updateMusicArrows();
-  }
-
-  musicViewport.addEventListener('touchstart', e => { onMusicDragStart(e.touches[0].clientX, e.touches[0].clientY, true); }, { passive: true });
-  musicViewport.addEventListener('touchmove',  e => { onMusicDragMove(e.touches[0].clientX, e.touches[0].clientY, e); }, { passive: false });
-  musicViewport.addEventListener('touchend',   () => { onMusicDragEnd(); });
-  musicViewport.addEventListener('touchcancel', () => { musicDragging = false; });
-  musicViewport.addEventListener('mousedown',  e => { onMusicDragStart(e.clientX, 0, false); e.preventDefault(); });
-  window.addEventListener('mousemove', e => { if (musicDragging) onMusicDragMove(e.clientX, 0, null); });
-  window.addEventListener('mouseup',   onMusicDragEnd);
 
   musicViewport.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  goToMusicSlide(musicCurrent - 1);
@@ -249,6 +303,8 @@ function initMusicCarousel() {
     }
   }, { passive: false });
 
+  const { seekTo } = initFreeScrollCarousel(musicTrack, musicTrack.closest('.carousel__clip'));
+  musicSeek = seekTo;
   setMusicSlideWidths();
   window.addEventListener('resize', setMusicSlideWidths, { passive: true });
 }
