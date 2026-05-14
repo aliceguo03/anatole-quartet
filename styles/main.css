@@ -1057,7 +1057,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
 
 /* ─── Gallery photographer credit ───────────────────────────── */
 .gallery__credit {
-  background: var(--color-surface);
+  background: var(--color-secondary-light);
   padding: 22px 48px;
   text-align: center;
 }
@@ -1065,7 +1065,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   font-family: var(--font-body);
   font-size: var(--text-caption-l);
   font-weight: 300;
-  color: var(--color-muted-text);
+  color: var(--color-elevated-surface);
   letter-spacing: 0.02em;
 }
 @media (max-width: 768px) {
